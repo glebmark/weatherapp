@@ -1,0 +1,97 @@
+@viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+}
+
+.dayContainerClass {
+  width: 100%;
+}
+
+html,
+body {
+position: relative;
+height: 100%;
+}
+
+body {
+background: #eee;
+font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+font-size: 14px;
+color: #000;
+margin: 0;
+padding: 0;
+}
+
+/* .swiper {
+  width: 100%;
+  height: 100%;
+} */
+
+/* .arrow-right, .arrow-left {
+    margin-top: -14px;
+    border-radius: 14px;
+    outline: 0;
+    background: rgba(255, 255, 255, .3);
+    
+    -webkit-transition: -webkit-box-shadow 160ms cubic-bezier(.25, .1, .25, 1);
+    -o-transition: box-shadow 160ms cubic-bezier(.25, .1, .25, 1);
+    transition: box-shadow 160ms cubic-bezier(.25, .1, .25, 1);
+    transition:box-shadow 160ms cubic-bezier(.25, .1, .25, 1), -webkit-box-shadow 160ms cubic-bezier(.25, .1, .25, 1)
+
+} */
+
+/* .arrow-right {
+  right: -30px !important
+} */
+
+div[id*="arrowRight"] {
+  right: -2px !important;
+  top: 27px !important;
+}
+
+div[id*="arrowLeft"] {
+  left: -2px !important;
+  top: 27px !important;
+}
+
+div[id*="swiperPagination"] {
+  bottom: -2px !important
+}
+
+/* .arrow-left {
+  left: -30px !important
+} */
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+
+@media only screen and (min-width: 768px) {
+  .dayContainerClass {
+      width: 400px;
+  }
+}
