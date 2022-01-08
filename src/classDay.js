@@ -3,12 +3,91 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import iconSwitch from './iconsSwitcher.js';
+
 // configure Swiper to use modules
 Swiper.use([Navigation, Pagination]);
 
 export default class Day {
     constructor(dayNumber) {
         this.dayNumber = dayNumber;
+    }
+
+    addWindspeed_10m(windspeed_10m) {
+        this.wind10m = windspeed_10m;
+    }
+
+    addTemperature_2m(temperature_2m) {
+        this.temp2m = temperature_2m;
+
+        let sumDayDailyTemp2m = [...temperature_2m].splice(9); // exclude first 8 night hours
+        this.averageDailyTemp2m = Math.round(sumDayDailyTemp2m.reduce((acc, v) => acc + v) / sumDayDailyTemp2m.length); 
+        
+    }
+
+    addTime (time) {
+        this.time = time;
+    }
+
+    addPrecipitation(precipitation) {
+        this.precipitation = precipitation;
+    }
+
+    addRelativehumidity_2m(relativehumidity_2m) {
+        this.relativehumidity_2m = relativehumidity_2m;
+    }
+
+    addWeatherCode(weatherCode) {
+        this.weatherCodeHourly = weatherCode;
+
+
+        let weatherCodeHourlyWithoutNight = [...weatherCode].splice(9); // exclude first 8 night hours
+
+        function getMostFrequent(arr) {
+            const hashmap = arr.reduce( (acc, val) => {
+             acc[val] = (acc[val] || 0 ) + 1
+             return acc
+          },{})
+         return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
+         }
+
+        this.weatherCodeAverage = getMostFrequent(weatherCodeHourlyWithoutNight)
+    }
+
+    
+
+    createDayContainer() {
+        let mainContainer = document.getElementById("mainContainer");
+        let dayContainer = document.createElement('div');
+        dayContainer.id = "dayContainer" + this.dayNumber;
+        this.dayContainer = dayContainer;
+        dayContainer.classList.add("dayContainerClass");
+        dayContainer.style.border = "3px solid #b2c8ff";
+        dayContainer.style.height = "300px";
+        dayContainer.style.display = "flex";
+        dayContainer.style.flexDirection = "row";
+        dayContainer.style.flexWrap = "wrap";
+        dayContainer.style.justifyContent = "space-evenly";
+        // dayContainer.style.justifyContent = "flex-start";
+        dayContainer.style.alignItems = "flex-start";
+        dayContainer.style.borderTopRightRadius = "60px 40px";
+        dayContainer.style.borderTopLeftRadius = "60px 40px";
+        dayContainer.style.borderBottomRightRadius = "60px 40px";
+        dayContainer.style.borderBottomLeftRadius = "60px 40px";
+        mainContainer.appendChild(dayContainer);
+    }
+
+    createTempContainer() {
+        let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
+        let tempContainer = document.createElement('div');
+        tempContainer.id = "tempContainer" + this.dayNumber;
+        // this.tempContainer = tempContainer;
+        // tempContainer.classList.add("tempContainerClass");
+        tempContainer.style.height = "65px";
+        tempContainer.style.width = "80%";
+        tempContainer.style.position = "relative";
+        tempContainer.style.overflow = "hidden";
+        dayContainer.appendChild(tempContainer);
     }
 
     addInstanceSwiper() {
@@ -36,73 +115,6 @@ export default class Day {
             },
                 });
         }, 200);
-    }
-    
-    addWindspeed_10m(windspeed_10m) {
-        this.wind10m = windspeed_10m;
-    }
-
-    addTemperature_2m(temperature_2m) {
-        this.temp2m = temperature_2m;
-    }
-
-    addTime (time) {
-        this.time = time;
-    }
-
-    addPrecipitation(precipitation) {
-        this.precipitation = precipitation;
-    }
-
-    addRelativehumidity_2m(relativehumidity_2m) {
-        this.relativehumidity_2m = relativehumidity_2m;
-    }
-
-    createDayContainer() {
-        let mainContainer = document.getElementById("mainContainer");
-        let dayContainer = document.createElement('div');
-        dayContainer.id = "dayContainer" + this.dayNumber;
-        this.dayContainer = dayContainer;
-        dayContainer.classList.add("dayContainerClass");
-        dayContainer.style.border = "3px solid #b2c8ff";
-        dayContainer.style.height = "300px";
-        dayContainer.style.display = "flex";
-        dayContainer.style.flexDirection = "row";
-        dayContainer.style.flexWrap = "wrap";
-        dayContainer.style.justifyContent = "space-evenly";
-        // dayContainer.style.justifyContent = "flex-start";
-        dayContainer.style.alignItems = "flex-start";
-        dayContainer.style.borderTopRightRadius = "60px 40px";
-        dayContainer.style.borderTopLeftRadius = "60px 40px";
-        dayContainer.style.borderBottomRightRadius = "60px 40px";
-        dayContainer.style.borderBottomLeftRadius = "60px 40px";
-        mainContainer.appendChild(dayContainer);
-    }
-
-    createGeneralInfoContainer() {
-        let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
-        let generalInfoContainer = document.createElement('div');
-        // generalInfoContainer.id = "generalInfoContainer" + this.dayNumber;
-        generalInfoContainer.classList.add("tempContainerClass");
-        generalInfoContainer.style.height = "200px";
-        generalInfoContainer.style.width = "80%";
-        generalInfoContainer.style.position = "relative";
-        generalInfoContainer.style.overflow = "hidden";
-        dayContainer.appendChild(generalInfoContainer);
-    }
-
-
-    createTempContainer() {
-        let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
-        let tempContainer = document.createElement('div');
-        tempContainer.id = "tempContainer" + this.dayNumber;
-        // this.tempContainer = tempContainer;
-        tempContainer.classList.add("tempContainerClass");
-        tempContainer.style.height = "65px";
-        tempContainer.style.width = "80%";
-        tempContainer.style.position = "relative";
-        tempContainer.style.overflow = "hidden";
-        dayContainer.appendChild(tempContainer);
     }
 
     createSwiperHours() {
@@ -157,4 +169,54 @@ export default class Day {
         buttonPrev.appendChild(svgArrowLeft);
 
     }
+
+    createGeneralInfoContainer() {
+        let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
+        let generalInfoContainer = document.createElement('div');
+        generalInfoContainer.id = "generalInfoContainer" + this.dayNumber;
+        // generalInfoContainer.classList.add("tempContainerClass");
+        generalInfoContainer.style.height = "200px";
+        generalInfoContainer.style.width = "100%";
+        generalInfoContainer.style.position = "relative";
+        generalInfoContainer.style.overflow = "hidden";
+        generalInfoContainer.style.border = "1px solid white";
+        dayContainer.appendChild(generalInfoContainer);
+    }
+
+    // works only for current (number 3) day
+    createCurrentTempContainer() {
+        let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
+        let currentTempContainer = document.createElement('div');
+        currentTempContainer.id = "currentTempContainer" + this.dayNumber;
+        currentTempContainer.style.height = "100px";
+        currentTempContainer.style.width = "27%";       
+        currentTempContainer.style.margin = "12px";       
+        // currentTempContainer.style.border = "1px solid white";
+        currentTempContainer.style.display = "flex";
+        currentTempContainer.style.flexDirection = "row";
+        // currentTempContainer.style.flexWrap = "wrap";
+        currentTempContainer.style.justifyContent = "space-evenly";
+        currentTempContainer.style.alignItems = "center";
+
+        let dayDailyTemp2m = document.createElement('div');
+        dayDailyTemp2m.style.fontSize = "32px";
+        dayDailyTemp2m.innerText = this.averageDailyTemp2m;
+        currentTempContainer.appendChild(dayDailyTemp2m);
+
+        let dailyWeatherCode = document.createElement('div');
+        dailyWeatherCode.style.height = "100%";
+        dailyWeatherCode.style.width = "60%";
+        dailyWeatherCode.classList.add("sunnyMainSCSSContainer");
+        // dailyWeatherCode.style.border = "3px solid yellow";
+        
+        
+        dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeAverage); // called from iconsSwitcher.js
+
+        currentTempContainer.appendChild(dailyWeatherCode);
+        currentTempContainer.appendChild(dayDailyTemp2m);
+        
+        generalInfoContainer.appendChild(currentTempContainer);
+
+    }
+
 }

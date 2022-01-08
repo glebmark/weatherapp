@@ -1,4 +1,7 @@
 import './style.css';
+import './iconsSCSS/styleSunnyWeather.scss';
+import './iconsSCSS/stylePartiallyCloudyWeather.scss';
+
 import Day from './classDay.js';
 
 // mainContainer is needed to fit all 7-9 dayContainers
@@ -42,8 +45,8 @@ console.log(o)
 
 
 // fetch data
-let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,precipitation,windspeed_10m&windspeed_unit=ms&timezone=Europe%2FMoscow";
-// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,shortwave_radiation_sum&current_weather=true&windspeed_unit=ms&timezone=Europe%2FMoscow&past_days=2";
+// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,precipitation,windspeed_10m&windspeed_unit=ms&timezone=Europe%2FMoscow";
+let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2"
 
 // let url = 'logs.json';
 // const url = require('./logs.json');
@@ -61,7 +64,7 @@ fetch(url)
 
 function appendData(data) {
     // 7 - is just 7 days of week (in other version 9 - is 7 + 2 past days before)
-    for(let i = 1; i <= 7; i++) {
+    for(let i = 1; i <= 9; i++) {
         let date = "";
         try {
             date = data.hourly.time[0].substring(0, 10);
@@ -87,10 +90,23 @@ function appendData(data) {
 
         window["day" + i].addRelativehumidity_2m(data.hourly.relativehumidity_2m.splice(0, currentDay.length));
 
+        window["day" + i].addWeatherCode(data.hourly.weathercode.splice(0, currentDay.length));
+        
+
+
+        // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
+        if (i === 3) {
+            // call method of current day
+        } else {
+            // call method for other days
+        }
+
         // create DOM elements
         window["day" + i].createDayContainer();
 
         window["day" + i].createGeneralInfoContainer();
+
+        window["day" + i].createCurrentTempContainer();
 
         window["day" + i].createTempContainer();
 
