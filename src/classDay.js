@@ -11,6 +11,7 @@ Swiper.use([Navigation, Pagination]);
 export default class Day {
     constructor(dayNumber) {
         this.dayNumber = dayNumber;
+        
     }
 
     addWindspeed_10m(windspeed_10m) {
@@ -27,6 +28,10 @@ export default class Day {
 
     addTime (time) {
         this.time = time;
+
+        this.currentHour = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Moscow' }).substring(12, 14).toString();
+        let currentHourString = this.currentHour.toString();
+        this.indexOfCurrentHour = this.time.findIndex(v => v.substring(11, 13) === currentHourString); 
     }
 
     addPrecipitation(precipitation) {
@@ -41,8 +46,8 @@ export default class Day {
         this.weatherCodeHourly = weatherCode;
 
 
-        let weatherCodeHourlyWithoutNight = [...weatherCode].splice(9); // exclude first 8 night hours
-
+        // this block is needed for calculation average weathercode
+        this.weatherCodeHourlyWithoutNight = [...weatherCode].splice(9); // exclude first 8 night hours
         function getMostFrequent(arr) {
             const hashmap = arr.reduce( (acc, val) => {
              acc[val] = (acc[val] || 0 ) + 1
@@ -51,7 +56,7 @@ export default class Day {
          return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
          }
 
-        this.weatherCodeAverage = getMostFrequent(weatherCodeHourlyWithoutNight)
+        this.weatherCodeAverage = getMostFrequent(this.weatherCodeHourlyWithoutNight)
     }
 
     
@@ -121,9 +126,10 @@ export default class Day {
         let swiper = document.createElement('div');
         let dayNumber = this.dayNumber;
         let temp2m = this.temp2m;
+        let weatherCodeHourly = this.weatherCodeHourly;
         swiper.classList.add("swiper");
         swiper.id = `mySwiper${dayNumber}`
-        swiper.style.height = "50px";
+        swiper.style.height = "65px";
         swiper.style.width = "85%";
         let tempContainer = document.getElementById("tempContainer" + dayNumber);
         tempContainer.appendChild(swiper);
@@ -179,19 +185,18 @@ export default class Day {
         generalInfoContainer.style.width = "100%";
         generalInfoContainer.style.position = "relative";
         generalInfoContainer.style.overflow = "hidden";
-        generalInfoContainer.style.border = "1px solid white";
+        // generalInfoContainer.style.border = "1px solid white";
         dayContainer.appendChild(generalInfoContainer);
     }
 
-    // works only for current (number 3) day
-    createCurrentTempContainer() {
+    createLargeTempAndWeatherCodeContainer() {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let currentTempContainer = document.createElement('div');
         currentTempContainer.id = "currentTempContainer" + this.dayNumber;
-        currentTempContainer.style.height = "100px";
-        currentTempContainer.style.width = "27%";       
-        currentTempContainer.style.margin = "12px";       
-        // currentTempContainer.style.border = "1px solid white";
+        currentTempContainer.style.height = "120px";
+        currentTempContainer.style.width = "35%";       
+        currentTempContainer.style.marginLeft = "3px";       
+        currentTempContainer.style.border = "1px solid white";
         currentTempContainer.style.display = "flex";
         currentTempContainer.style.flexDirection = "row";
         // currentTempContainer.style.flexWrap = "wrap";
@@ -203,17 +208,62 @@ export default class Day {
         dayDailyTemp2m.innerText = this.averageDailyTemp2m;
         currentTempContainer.appendChild(dayDailyTemp2m);
 
-        let dailyWeatherCode = document.createElement('div');
-        dailyWeatherCode.style.height = "100%";
-        dailyWeatherCode.style.width = "60%";
-        dailyWeatherCode.classList.add("sunnyMainSCSSContainer");
-        // dailyWeatherCode.style.border = "3px solid yellow";
-        
-        
-        dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeAverage); // called from iconsSwitcher.js
+        let dailyWeatherCodeMainContainer = document.createElement('div');
+        dailyWeatherCodeMainContainer.style.height = "100%";
+        dailyWeatherCodeMainContainer.style.width = "60%";
 
-        currentTempContainer.appendChild(dailyWeatherCode);
+        let dailyWeatherCode = document.createElement('div');
+        dailyWeatherCode.classList.add("mainWeatherIconSCSSContainer");
+        
+        
+        // this block needed only for test of weather SCSS animation
+        // let testWeatherCode = 0;
+        // switch (this.dayNumber) {
+        //     case 1:
+        //         testWeatherCode = 0;
+        //         break;
+        //     case 2:
+        //         testWeatherCode = 1;
+        //         break;
+        //     case 3:
+        //         testWeatherCode = 2;
+        //         break;
+        //     case 4:
+        //         testWeatherCode = 3;
+        //         break;
+        //     case 5:
+        //         testWeatherCode = 48;
+        //         break;
+        //     case 6:
+        //         testWeatherCode = 56;
+        //         break;
+        //     case 7:
+        //         testWeatherCode = 67;
+        //         break;
+        //     case 8:
+        //         testWeatherCode = 85;
+        //         break;
+        //     case 9:
+        //         testWeatherCode = 99;
+        //         break;
+        // }
+
+        
+        // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
+        if (this.dayNumber === 3) {
+            // call method of current day
+            dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeHourly[this.indexOfCurrentHour]); // called from iconsSwitcher.js
+        } else {
+            // call method for other days
+            dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeAverage); // called from iconsSwitcher.js
+        // dailyWeatherCode.innerHTML = iconSwitch(testWeatherCode); // called from iconsSwitcher.js
+        }
+
+        
+
         currentTempContainer.appendChild(dayDailyTemp2m);
+        dailyWeatherCodeMainContainer.appendChild(dailyWeatherCode);
+        currentTempContainer.appendChild(dailyWeatherCodeMainContainer);
         
         generalInfoContainer.appendChild(currentTempContainer);
 

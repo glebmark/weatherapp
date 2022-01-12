@@ -1,0 +1,83 @@
+// color palette: https://coolors.co/212f45-fdac49-fcd422-fffafa
+
+$background: #272932;
+$orange: #fdac49;
+$yellow: #fcd422;
+$white: #fffafa;
+$gray: #a3a3a3;
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+.mainWeatherIconSCSSContainer {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	background: $background;
+}
+
+.mistContainer {
+	width: 100%;
+	// max-width: 40%;
+
+	.mistCanvas {
+		position: relative;
+		padding-top: 100%;
+		overflow: hidden;
+	}
+}
+
+.mistMist {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+
+	@mixin sharedMistLine {
+		position: absolute;
+		height: 7%;
+		background: $white;
+		border-radius: 10rem;
+	}
+
+	.mistMist-line:nth-of-type(1) {
+		@include sharedMistLine;
+		width: 40%;
+		top: 16%;
+		right: 25%;
+	}
+
+	.mistMist-line:nth-of-type(2) {
+		@include sharedMistLine;
+		width: 40%;
+		top: 31%;
+		left: 20%;
+	}
+
+	.mistMist-line:nth-of-type(3) {
+		@include sharedMistLine;
+		width: 50%;
+		top: 46%;
+		left: 25%;
+	}
+
+	.mistMist-line:nth-of-type(4) {
+		@include sharedMistLine;
+		width: 40%;
+		top: 61%;
+		right: 20%;
+	}
+
+	.mistMist-line:nth-of-type(5) {
+		@include sharedMistLine;
+		width: 50%;
+		top: 76%;
+		left: 25%;
+	}
+}
+

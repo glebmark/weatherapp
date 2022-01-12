@@ -1,6 +1,13 @@
 import './style.css';
 import './iconsSCSS/styleSunnyWeather.scss';
 import './iconsSCSS/stylePartiallyCloudyWeather.scss';
+import './iconsSCSS/styleScatteredCloudyWeather.scss';
+import './iconsSCSS/styleBrokenCloudyWeather.scss';
+import './iconsSCSS/styleMistWeather.scss';
+import './iconsSCSS/styleRainWeather.scss';
+import './iconsSCSS/styleRainyTwoWeather.scss';
+import './iconsSCSS/styleSnowyWeather.scss';
+import './iconsSCSS/styleThunderstormWeather.scss';
 
 import Day from './classDay.js';
 
@@ -94,19 +101,14 @@ function appendData(data) {
         
 
 
-        // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
-        if (i === 3) {
-            // call method of current day
-        } else {
-            // call method for other days
-        }
+        
 
         // create DOM elements
         window["day" + i].createDayContainer();
 
         window["day" + i].createGeneralInfoContainer();
 
-        window["day" + i].createCurrentTempContainer();
+        window["day" + i].createLargeTempAndWeatherCodeContainer();
 
         window["day" + i].createTempContainer();
 
