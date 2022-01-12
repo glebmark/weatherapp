@@ -100,6 +100,12 @@ function appendData(data) {
 
         window["day" + i].addWeatherCode(data.hourly.weathercode.splice(0, currentDay.length));
         
+        if (i !== 1) { //exclude first day as it isn't possible calculate how first
+                        // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
+            window["day" + i].addSunriseSunset(data.daily.sunrise[i-1], data.daily.sunrise[i-2], data.daily.sunset[i-1], data.daily.sunset[i-2])
+        }
+        
+        
 
 
         
@@ -113,9 +119,12 @@ function appendData(data) {
 
         window["day" + i].createDateContainer();
 
+        window["day" + i].createSunraiseSunsetContainer()
+
         window["day" + i].createTempContainer();
 
         window["day" + i].createSwiperHours();
+
 
         console.log(window["day" + i])
     }   

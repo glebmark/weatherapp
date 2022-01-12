@@ -70,6 +70,53 @@ export default class Day {
         this.weatherCodeAverage = getMostFrequent(this.weatherCodeHourlyWithoutNight)
     }
 
+    addSunriseSunset(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday) {
+        console.log(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday);
+        
+        // let sunriseT = Date.parse("2022-01-11T08:50");
+        // let sunriseY = Date.parse("2022-01-10T08:51");
+        
+        let sunriseT = Date.parse(sunriseToday);
+        let sunriseY = Date.parse(sunriseYesterday);
+        let sunriseDelta = (sunriseT - sunriseY - 86400000)/1000/60;
+
+        let sunsetT = Date.parse(sunsetToday);
+        let sunsetY = Date.parse(sunsetYesterday);
+        let sunsetDelta = (sunsetT - sunsetY - 86400000)/1000/60;
+        // let sunsetT = Date.parse("2022-01-11T16:24");
+        // let sunsetY = Date.parse("2022-01-10T16:22");
+        
+        sunriseDelta = sunriseDelta * -1; // it's needed for converting surplus or missing minutes in right way
+        
+        console.log(Math.sign(sunriseDelta));
+        console.log(Math.sign(sunsetDelta));
+
+
+        // if ((Math.sign(sunriseDelta) === -1) && (Math.sign(sunsetDelta) === 1)) { // it's rising length of day from 22.Dec to 22.Jun
+            
+        //     console.log("it rising");
+        // } else { // it's falling length of day from 22.Jun to 22.Dec
+        //     sunriseDelta = sunriseDelta * -1;
+        //     console.log("it falling");
+        // }
+
+        console.log("it's sunriseDelta: ", sunriseDelta);
+        console.log("it's sunsetDelta: ", sunsetDelta);
+
+        this.sunDailyDelta = sunriseDelta + sunsetDelta;
+
+        if (Math.sign(this.sunDailyDelta) === 1) { // it's rising length of day from 22.Dec to 22.Jun
+            this.sunDailyDelta = `<span>Сегодняшний день длиннее предыдущего на <span style="color = green;">${this.sunDailyDelta}</span> минут</span>`
+            console.log("THIS IS THIS DELTA", this.sunDailyDelta)
+        } else { // it's falling length of day from 22.Jun to 22.Dec
+            this.sunDailyDelta = `<span>Сегодняшний день короче предыдущего на <span style="color = red;">${this.sunDailyDelta}</span> минут</span>`
+            console.log("THIS IS THIS DELTA", this.sunDailyDelta)
+        }
+
+        console.log("it's this.sunDailyDelta: ", this.sunDailyDelta);
+        
+    }
+
     
 
     createDayContainer() {
@@ -395,6 +442,20 @@ export default class Day {
             // console.log(time.ms); // We have access to all those properties via a single variable.
         }
 
+    }
+
+    createSunraiseSunsetContainer() {
+        let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
+        let sunraiseSunsetContainer = document.createElement('div');
+        sunraiseSunsetContainer.id = "sunraiseSunsetContainer" + this.dayNumber;
+        sunraiseSunsetContainer.style.height = "45px";
+        sunraiseSunsetContainer.style.width = "60%";       
+        sunraiseSunsetContainer.style.marginLeft = "3px";       
+        sunraiseSunsetContainer.style.marginTop = "6px";       
+        sunraiseSunsetContainer.style.border = "1px solid white";
+        sunraiseSunsetContainer.style.fontSize = "18px";
+        sunraiseSunsetContainer.innerHTML = this.sunDailyDelta;
+        generalInfoContainer.appendChild(sunraiseSunsetContainer);
     }
 
 }
