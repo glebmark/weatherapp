@@ -3,16 +3,12 @@
   zoom: 1.0 ;
 }
 
-html, body {
-  /* position: relative; */
-  /* height: 100%; */
-}
-
 body {
   background: #272932;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #b2c8ff;
+  /* color: #a3e6d1; */
   margin: 0;
   padding: 0;
 }

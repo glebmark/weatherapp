@@ -52,8 +52,9 @@ console.log(o)
 
 
 // fetch data
-// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,precipitation,windspeed_10m&windspeed_unit=ms&timezone=Europe%2FMoscow";
-let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2"
+// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2";
+// let url = "http://www.glebmark.com/getWeatherData";
+let url = "http://localhost:3005/getWeatherData";
 
 // let url = 'logs.json';
 // const url = require('./logs.json');
@@ -109,6 +110,8 @@ function appendData(data) {
         window["day" + i].createGeneralInfoContainer();
 
         window["day" + i].createLargeTempAndWeatherCodeContainer();
+
+        window["day" + i].createDateContainer();
 
         window["day" + i].createTempContainer();
 

@@ -29,6 +29,17 @@ export default class Day {
     addTime (time) {
         this.time = time;
 
+        // where -3 is minus current, yesterday, day before yesterday
+        let date = new Date(new Date().getTime() + (this.dayNumber - 3) * (24 * 60 * 60 * 1000));
+        let formatter = new Intl.DateTimeFormat("ru", {
+            weekday: "long",
+            // year: "numeric",
+            month: "long",
+            day: "numeric"
+          });
+        this.currentDateRussianFormat = formatter.format(date);
+
+        // currentHour is used to match with hours in Current Day in array from JSON taken from Open Meteo
         this.currentHour = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Moscow' }).substring(12, 14).toString();
         let currentHourString = this.currentHour.toString();
         this.indexOfCurrentHour = this.time.findIndex(v => v.substring(11, 13) === currentHourString); 
@@ -185,28 +196,32 @@ export default class Day {
         generalInfoContainer.style.width = "100%";
         generalInfoContainer.style.position = "relative";
         generalInfoContainer.style.overflow = "hidden";
-        // generalInfoContainer.style.border = "1px solid white";
+        generalInfoContainer.style.border = "1px solid white";
+        generalInfoContainer.style.display = "flex";
+        generalInfoContainer.style.flexDirection = "row";
+        // generalInfoContainer.style.flexWrap = "wrap";
+        generalInfoContainer.style.justifyContent = "flex-start";
+        generalInfoContainer.style.alignItems = "flex-start";
         dayContainer.appendChild(generalInfoContainer);
     }
 
     createLargeTempAndWeatherCodeContainer() {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
-        let currentTempContainer = document.createElement('div');
-        currentTempContainer.id = "currentTempContainer" + this.dayNumber;
-        currentTempContainer.style.height = "120px";
-        currentTempContainer.style.width = "35%";       
-        currentTempContainer.style.marginLeft = "3px";       
-        currentTempContainer.style.border = "1px solid white";
-        currentTempContainer.style.display = "flex";
-        currentTempContainer.style.flexDirection = "row";
-        // currentTempContainer.style.flexWrap = "wrap";
-        currentTempContainer.style.justifyContent = "space-evenly";
-        currentTempContainer.style.alignItems = "center";
+        let LargeTempAndWeatherCodeContainer = document.createElement('div');
+        LargeTempAndWeatherCodeContainer.id = "LargeTempAndWeatherCodeContainer" + this.dayNumber;
+        LargeTempAndWeatherCodeContainer.style.height = "120px";
+        LargeTempAndWeatherCodeContainer.style.width = "35%";       
+        LargeTempAndWeatherCodeContainer.style.marginLeft = "3px";       
+        LargeTempAndWeatherCodeContainer.style.border = "1px solid white";
+        LargeTempAndWeatherCodeContainer.style.display = "flex";
+        LargeTempAndWeatherCodeContainer.style.flexDirection = "row";
+        // LargeTempAndWeatherCodeContainer.style.flexWrap = "wrap";
+        LargeTempAndWeatherCodeContainer.style.justifyContent = "space-evenly";
+        LargeTempAndWeatherCodeContainer.style.alignItems = "center";
 
         let dayDailyTemp2m = document.createElement('div');
         dayDailyTemp2m.style.fontSize = "32px";
-        dayDailyTemp2m.innerText = this.averageDailyTemp2m;
-        currentTempContainer.appendChild(dayDailyTemp2m);
+        LargeTempAndWeatherCodeContainer.appendChild(dayDailyTemp2m);
 
         let dailyWeatherCodeMainContainer = document.createElement('div');
         dailyWeatherCodeMainContainer.style.height = "100%";
@@ -253,19 +268,132 @@ export default class Day {
         if (this.dayNumber === 3) {
             // call method of current day
             dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeHourly[this.indexOfCurrentHour]); // called from iconsSwitcher.js
+            dayDailyTemp2m.innerText = this.temp2m[this.indexOfCurrentHour];
         } else {
             // call method for other days
             dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeAverage); // called from iconsSwitcher.js
+            dayDailyTemp2m.innerText = this.averageDailyTemp2m;
         // dailyWeatherCode.innerHTML = iconSwitch(testWeatherCode); // called from iconsSwitcher.js
         }
 
         
 
-        currentTempContainer.appendChild(dayDailyTemp2m);
+        LargeTempAndWeatherCodeContainer.appendChild(dayDailyTemp2m);
         dailyWeatherCodeMainContainer.appendChild(dailyWeatherCode);
-        currentTempContainer.appendChild(dailyWeatherCodeMainContainer);
+        LargeTempAndWeatherCodeContainer.appendChild(dailyWeatherCodeMainContainer);
         
-        generalInfoContainer.appendChild(currentTempContainer);
+        generalInfoContainer.appendChild(LargeTempAndWeatherCodeContainer);
+
+    }
+
+    createDateContainer() {
+        let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
+        let dateContainer = document.createElement('div');
+        dateContainer.id = "dateContainer" + this.dayNumber;
+        dateContainer.style.height = "45px";
+        dateContainer.style.width = "60%";       
+        dateContainer.style.marginLeft = "3px";       
+        dateContainer.style.marginTop = "6px";       
+        dateContainer.style.border = "1px solid white";
+        dateContainer.style.fontSize = "18px";
+
+        
+
+        // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
+        let dateText = "";
+        switch (this.dayNumber) {
+            case 1:
+                dateText = "Позавчера";
+                break;
+            case 2:
+                dateText = "Вчера";
+                break;
+            case 3:
+                dateText = "Сегодня";
+                break;
+            case 4:
+                dateText = "Завтра";
+                break;
+            case 5:
+                dateText = "Послезавтра";
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                dateText = "Не скоро";
+                break;
+        }
+
+        
+        
+        // currentHourAndMinutes is used to display user current time in Current Day container
+        // setTimeout(this.currentHourAndMinutes(), 1000)
+        // this.currentHourAndMinutes = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Moscow' }).substring(12, 17).toString();
+        
+        
+        // function display_c(){
+        //     setTimeout('display_ct()', 1000)
+        // }
+        
+        // let timeRefreshable = display_ct();
+
+        // function display_ct() {
+        //     let x = new Date();
+        //     document.getElementById('heh').innerHTML = x;
+        //     display_c();
+        //     // return 
+            
+        // }
+
+        
+
+        let dateActualDate = `<span>${dateText} <br> ${this.currentDateRussianFormat}</span>
+        ${this.dayNumber === 3 ? `<span id="clock" 
+                style="color: #a3e6d1; font-size: 25px; line-height: 10px"></span>` : ""
+            }`;
+
+        // if (this.dayNumber === 3) {
+        //     // add hour and minutes for current day
+        //     dateActualDate += `<span style="color:red; font-size:30px;"> ${this.currentHourAndMinutes}</span>`;
+        // }
+
+        dateContainer.innerHTML = dateActualDate;
+        // dateContainer.innerText = `\u0421\u0435\u0433\u043eдня \n ${this.time[0].substring(0, 10)} ${this.currentHourAndMinutes}`;
+        
+
+        generalInfoContainer.appendChild(dateContainer);
+        
+        
+        if (this.dayNumber === 3) {
+            let time = {};
+
+            (function () {
+            
+            
+            (function tick () {
+                let clock = document.getElementById('clock');
+                let seconds, minutes, d = new Date();
+                time.weekday = d.getDay();
+                time.day = d.getDate();
+                time.month = d.getMonth() + 1; //JS says jan = 0
+                time.year = d.getFullYear();
+                time.minutes = d.getMinutes();
+                time.hours = d.getHours(); //eastern time zone
+                time.seconds = d.getSeconds();
+                time.ms = d.getMilliseconds();
+                
+                minutes = (time.minutes < 10 ? '0' + time.minutes : time.minutes);
+                seconds = (time.seconds < 10 ? '0' + time.seconds : time.seconds);
+                
+                clock.innerText = `${"\u00a0".repeat(5)}` + time.hours + ':' + minutes + ':' + seconds;
+                
+                window.setTimeout(tick, 1000);
+
+            }()); // Note the parens here, we invoke these functions right away
+            }()); // This one keeps clock away from the global scope
+            // console.log(time.ms); // We have access to all those properties via a single variable.
+        }
 
     }
 
