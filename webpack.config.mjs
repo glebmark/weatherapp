@@ -2,7 +2,7 @@
 import path from "path";
 
 export default { //module.exports = { // export default
-  entry: './src/index.js',
+  entry: './srcFrontend/index.js',
   mode:"development",
   output: {
     filename: 'bundle.js',

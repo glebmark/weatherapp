@@ -1,18 +1,10 @@
 "use strict";
 
-// const express = require("express");
 import express from "express";
 const app = express();
-
-// const {sup, heh} = require("./middle").default;
 import {sup, heh} from "./middle.mjs";
-
-// const cors = require("cors");
 import cors from "cors";
-
-// const fetch = require('node-fetch');
 import fetch from 'node-fetch';
-
 import fs from "fs";
 
 app.use(sup); // this is just testing middle function for all requests
@@ -70,7 +62,7 @@ function appendData(data) {
     // console.log(data)
 }
 
-app.get("/getWeatherData", (req, res) => {
+app.get("/getWeatherData", (req, res) => { // save JSON on server, then clients will take file from here
     if (!res.headersSent) {
         res.sendFile("./weatherData.json", { root: "."}); // not __dirname but "." because it's .mjs file
     }
