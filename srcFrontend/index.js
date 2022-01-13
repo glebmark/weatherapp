@@ -116,9 +116,9 @@ function appendData(data) {
         window["day" + i].createGeneralInfoContainer();
 
         window["day" + i].createLargeTempAndWeatherCodeContainer();
-
+        
         window["day" + i].createDateContainer();
-
+ 
         window["day" + i].createSunraiseSunsetContainer()
 
         window["day" + i].createTempContainer();

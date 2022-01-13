@@ -4,6 +4,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import iconSwitch from './iconsSwitcher.js';
+import {setStylesOnElement, } from './service.js';
 
 // configure Swiper to use modules
 Swiper.use([Navigation, Pagination]);
@@ -71,49 +72,48 @@ export default class Day {
     }
 
     addSunriseSunset(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday) {
-        console.log(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday);
-        
         // let sunriseT = Date.parse("2022-01-11T08:50");
         // let sunriseY = Date.parse("2022-01-10T08:51");
-        
         let sunriseT = Date.parse(sunriseToday);
         let sunriseY = Date.parse(sunriseYesterday);
         let sunriseDelta = (sunriseT - sunriseY - 86400000)/1000/60;
 
+        // let sunsetT = Date.parse("2022-01-11T16:24");
+        // let sunsetY = Date.parse("2022-01-10T16:22");
         let sunsetT = Date.parse(sunsetToday);
         let sunsetY = Date.parse(sunsetYesterday);
         let sunsetDelta = (sunsetT - sunsetY - 86400000)/1000/60;
-        // let sunsetT = Date.parse("2022-01-11T16:24");
-        // let sunsetY = Date.parse("2022-01-10T16:22");
         
         sunriseDelta = sunriseDelta * -1; // it's needed for converting surplus or missing minutes in right way
-        
-        console.log(Math.sign(sunriseDelta));
-        console.log(Math.sign(sunsetDelta));
-
-
-        // if ((Math.sign(sunriseDelta) === -1) && (Math.sign(sunsetDelta) === 1)) { // it's rising length of day from 22.Dec to 22.Jun
-            
-        //     console.log("it rising");
-        // } else { // it's falling length of day from 22.Jun to 22.Dec
-        //     sunriseDelta = sunriseDelta * -1;
-        //     console.log("it falling");
-        // }
-
-        console.log("it's sunriseDelta: ", sunriseDelta);
-        console.log("it's sunsetDelta: ", sunsetDelta);
-
         this.sunDailyDelta = sunriseDelta + sunsetDelta;
 
-        if (Math.sign(this.sunDailyDelta) === 1) { // it's rising length of day from 22.Dec to 22.Jun
-            this.sunDailyDelta = `<span>Сегодняшний день длиннее предыдущего на <span style="color = green;">${this.sunDailyDelta}</span> минут</span>`
-            console.log("THIS IS THIS DELTA", this.sunDailyDelta)
-        } else { // it's falling length of day from 22.Jun to 22.Dec
-            this.sunDailyDelta = `<span>Сегодняшний день короче предыдущего на <span style="color = red;">${this.sunDailyDelta}</span> минут</span>`
-            console.log("THIS IS THIS DELTA", this.sunDailyDelta)
+        // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
+        let minuteName = "";
+        switch (this.sunDailyDelta) {
+            case 0:    
+            case 5:
+            case 6:
+                minuteName = "минут";
+                break;
+            case 1:
+                minuteName = "минуту";
+                break;
+            case 2:
+            case 3:
+            case 4:
+                minuteName = "минуты";
+                break;
         }
 
-        console.log("it's this.sunDailyDelta: ", this.sunDailyDelta);
+        this.sunDailyDeltaText = "";
+        if (Math.sign(this.sunDailyDelta) === 1) { // it's rising length of day from 22.Dec to 22.Jun
+            this.sunDailyDeltaText = `<span style='font-size: 14px;'>Световой день длиннее на 
+            <span style='color: #a3e6d1;'>${this.sunDailyDelta + " " + minuteName}</span></span>`
+        } else { // it's falling length of day from 22.Jun to 22.Dec
+            this.sunDailyDeltaText = `<span style='font-size: 14px;'>Световой день короче на 
+            <span style='color: #FD5656;'>${this.sunDailyDelta + " " + minuteName}</span></span>`
+        }
+
         
     }
 
@@ -125,18 +125,22 @@ export default class Day {
         dayContainer.id = "dayContainer" + this.dayNumber;
         this.dayContainer = dayContainer;
         dayContainer.classList.add("dayContainerClass");
-        dayContainer.style.border = "3px solid #b2c8ff";
-        dayContainer.style.height = "300px";
-        dayContainer.style.display = "flex";
-        dayContainer.style.flexDirection = "row";
-        dayContainer.style.flexWrap = "wrap";
-        dayContainer.style.justifyContent = "space-evenly";
-        // dayContainer.style.justifyContent = "flex-start";
-        dayContainer.style.alignItems = "flex-start";
-        dayContainer.style.borderTopRightRadius = "60px 40px";
-        dayContainer.style.borderTopLeftRadius = "60px 40px";
-        dayContainer.style.borderBottomRightRadius = "60px 40px";
-        dayContainer.style.borderBottomLeftRadius = "60px 40px";
+
+        let styles = {
+            border : "3px solid #b2c8ff",
+            height : "300px",
+            display : "flex",
+            flexDirection : "row",
+            flexWrap : "wrap",
+            justifyContent : "space-evenly",
+            alignItems : "flex-start",
+            borderTopRightRadius : "60px 40px",
+            borderTopLeftRadius : "60px 40px",
+            borderBottomRightRadius : "60px 40px",
+            borderBottomLeftRadius : "60px 40px",
+        }
+        setStylesOnElement(dayContainer, styles);
+
         mainContainer.appendChild(dayContainer);
     }
 
@@ -144,12 +148,15 @@ export default class Day {
         let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
         let tempContainer = document.createElement('div');
         tempContainer.id = "tempContainer" + this.dayNumber;
-        // this.tempContainer = tempContainer;
-        // tempContainer.classList.add("tempContainerClass");
-        tempContainer.style.height = "65px";
-        tempContainer.style.width = "80%";
-        tempContainer.style.position = "relative";
-        tempContainer.style.overflow = "hidden";
+
+        let styles = {
+            height : "65px",
+            width : "80%",
+            position :"relative",       
+            overflow :"hidden",       
+        }
+        setStylesOnElement(tempContainer, styles);
+
         dayContainer.appendChild(tempContainer);
     }
 
@@ -203,7 +210,7 @@ export default class Day {
             // tempListItem.style.display = "inline-block";
             let slideHour = hour.substring(11, 16).toString();
             let slideTemp2m = temp2m[i].toString();
-            tempListItem.innerText = slideHour + "\n" + slideTemp2m;
+            tempListItem.innerText = slideHour + "\n" + slideTemp2m + "\u00B0";
             swiperWrapper.appendChild(tempListItem);
         });
 
@@ -238,17 +245,20 @@ export default class Day {
         let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
         let generalInfoContainer = document.createElement('div');
         generalInfoContainer.id = "generalInfoContainer" + this.dayNumber;
-        // generalInfoContainer.classList.add("tempContainerClass");
-        generalInfoContainer.style.height = "200px";
-        generalInfoContainer.style.width = "100%";
-        generalInfoContainer.style.position = "relative";
-        generalInfoContainer.style.overflow = "hidden";
-        generalInfoContainer.style.border = "1px solid white";
-        generalInfoContainer.style.display = "flex";
-        generalInfoContainer.style.flexDirection = "row";
-        // generalInfoContainer.style.flexWrap = "wrap";
-        generalInfoContainer.style.justifyContent = "flex-start";
-        generalInfoContainer.style.alignItems = "flex-start";
+        let styles = {
+            height : "200px",
+            width : "100%",
+            position : "relative",
+            overflow : "hidden",
+            border : "1px solid white",
+            display : "flex",
+            flexDirection : "row",
+            flexWrap : "wrap",
+            justifyContent : "flex-start",
+            alignItems : "flex-start",
+        }
+        setStylesOnElement(generalInfoContainer, styles);
+
         dayContainer.appendChild(generalInfoContainer);
     }
 
@@ -256,15 +266,18 @@ export default class Day {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let LargeTempAndWeatherCodeContainer = document.createElement('div');
         LargeTempAndWeatherCodeContainer.id = "LargeTempAndWeatherCodeContainer" + this.dayNumber;
-        LargeTempAndWeatherCodeContainer.style.height = "120px";
-        LargeTempAndWeatherCodeContainer.style.width = "35%";       
-        LargeTempAndWeatherCodeContainer.style.marginLeft = "3px";       
-        LargeTempAndWeatherCodeContainer.style.border = "1px solid white";
-        LargeTempAndWeatherCodeContainer.style.display = "flex";
-        LargeTempAndWeatherCodeContainer.style.flexDirection = "row";
-        // LargeTempAndWeatherCodeContainer.style.flexWrap = "wrap";
-        LargeTempAndWeatherCodeContainer.style.justifyContent = "space-evenly";
-        LargeTempAndWeatherCodeContainer.style.alignItems = "center";
+
+        let styles = {
+            height : "120px",
+            width : "42%",
+            marginLeft :"3px",       
+            border : "1px solid white",
+            display : "flex",
+            flexDirection : "row",
+            justifyContent : "space-evenly",
+            alignItems : "center",
+        }
+        setStylesOnElement(LargeTempAndWeatherCodeContainer, styles);
 
         let dayDailyTemp2m = document.createElement('div');
         dayDailyTemp2m.style.fontSize = "32px";
@@ -314,12 +327,12 @@ export default class Day {
         // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
         if (this.dayNumber === 3) {
             // call method of current day
+            dayDailyTemp2m.innerText = this.temp2m[this.indexOfCurrentHour] + "\u00B0";
             dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeHourly[this.indexOfCurrentHour]); // called from iconsSwitcher.js
-            dayDailyTemp2m.innerText = this.temp2m[this.indexOfCurrentHour];
         } else {
             // call method for other days
+            dayDailyTemp2m.innerText = this.averageDailyTemp2m + "\u00B0";
             dailyWeatherCode.innerHTML = iconSwitch(this.weatherCodeAverage); // called from iconsSwitcher.js
-            dayDailyTemp2m.innerText = this.averageDailyTemp2m;
         // dailyWeatherCode.innerHTML = iconSwitch(testWeatherCode); // called from iconsSwitcher.js
         }
 
@@ -337,12 +350,16 @@ export default class Day {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let dateContainer = document.createElement('div');
         dateContainer.id = "dateContainer" + this.dayNumber;
-        dateContainer.style.height = "45px";
-        dateContainer.style.width = "60%";       
-        dateContainer.style.marginLeft = "3px";       
-        dateContainer.style.marginTop = "6px";       
-        dateContainer.style.border = "1px solid white";
-        dateContainer.style.fontSize = "18px";
+
+        let styles = {
+            height : "45px",
+            width : "55%",
+            marginLeft :"3px",       
+            marginTop :"6px",       
+            border : "1px solid white",
+            fontSize : "18px",
+        }
+        setStylesOnElement(dateContainer, styles);
 
         
 
@@ -433,7 +450,7 @@ export default class Day {
                 minutes = (time.minutes < 10 ? '0' + time.minutes : time.minutes);
                 seconds = (time.seconds < 10 ? '0' + time.seconds : time.seconds);
                 
-                clock.innerText = `${"\u00a0".repeat(5)}` + time.hours + ':' + minutes + ':' + seconds;
+                clock.innerText = `${"\u00a0".repeat(2)}` + time.hours + ':' + minutes + ':' + seconds;
                 
                 window.setTimeout(tick, 1000);
 
@@ -448,13 +465,23 @@ export default class Day {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let sunraiseSunsetContainer = document.createElement('div');
         sunraiseSunsetContainer.id = "sunraiseSunsetContainer" + this.dayNumber;
-        sunraiseSunsetContainer.style.height = "45px";
-        sunraiseSunsetContainer.style.width = "60%";       
-        sunraiseSunsetContainer.style.marginLeft = "3px";       
-        sunraiseSunsetContainer.style.marginTop = "6px";       
-        sunraiseSunsetContainer.style.border = "1px solid white";
-        sunraiseSunsetContainer.style.fontSize = "18px";
-        sunraiseSunsetContainer.innerHTML = this.sunDailyDelta;
+
+        let styles = {
+            height : "25px",
+            width : "50%",
+            marginLeft :"3px",       
+            marginTop :"6px",       
+            border : "1px solid white",
+            fontSize : "18px",
+            alignSelf : "flex-end",
+        }
+        setStylesOnElement(sunraiseSunsetContainer, styles);
+
+        if (this.dayNumber !== 1) {  //exclude first day as it isn't possible calculate how first
+            // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
+            sunraiseSunsetContainer.innerHTML = this.sunDailyDeltaText;
+        }
+        
         generalInfoContainer.appendChild(sunraiseSunsetContainer);
     }
 
