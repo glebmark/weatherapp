@@ -1,7 +1,7 @@
 "use strict";
 
 // only for test
-const sup = (req, res, next) => {
+const testMiddleFunc1 = (req, res, next) => {
     console.log(req.method);
     // console.log(req.path); // just path of the url
     // console.log(`it's requested URL: ${req.url}`);
@@ -17,9 +17,9 @@ const sup = (req, res, next) => {
 }
 
 // only for test
-function heh(req, res, next) {
+function testMiddleFunc2(req, res, next) {
     console.log("testtest")
     next();
 }
 
-export {sup, heh};
+export {testMiddleFunc1, testMiddleFunc2};

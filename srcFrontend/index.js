@@ -119,14 +119,16 @@ function appendData(data) {
         
         window["day" + i].createDateContainer();
  
-        window["day" + i].createSunraiseSunsetContainer()
+        window["day" + i].createSunriseSunsetContainer();
+
+        window["day" + i].createWindCloudHumidityPressureContainer();
 
         window["day" + i].createTempContainer();
 
         window["day" + i].createSwiperHours();
 
 
-        console.log(window["day" + i])
+        console.log(window["day" + i]);
     }   
 }
 // window.onload = textDisplay;

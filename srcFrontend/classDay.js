@@ -245,18 +245,18 @@ export default class Day {
         let dayContainer = document.getElementById("dayContainer" + this.dayNumber);
         let generalInfoContainer = document.createElement('div');
         generalInfoContainer.id = "generalInfoContainer" + this.dayNumber;
+
         let styles = {
             height : "200px",
             width : "100%",
             position : "relative",
             overflow : "hidden",
             border : "1px solid white",
-            display : "flex",
-            flexDirection : "row",
-            flexWrap : "wrap",
-            justifyContent : "flex-start",
-            alignItems : "flex-start",
+            display : "grid",
+            gridTemplateColumns: "[column-1] 205px [column-2] auto [column-3] 210px [column-4]",
+            gridTemplateRows: "[row-1] 50px [row-2] 120px [row-3] auto [row-4]",
         }
+
         setStylesOnElement(generalInfoContainer, styles);
 
         dayContainer.appendChild(generalInfoContainer);
@@ -268,14 +268,16 @@ export default class Day {
         LargeTempAndWeatherCodeContainer.id = "LargeTempAndWeatherCodeContainer" + this.dayNumber;
 
         let styles = {
-            height : "120px",
-            width : "42%",
             marginLeft :"3px",       
             border : "1px solid white",
             display : "flex",
             flexDirection : "row",
             justifyContent : "space-evenly",
             alignItems : "center",
+            gridColumnStart : "1",
+            gridColumnEnd : "2",
+            gridRowStart : "1",
+            gridRowEnd : "3", 
         }
         setStylesOnElement(LargeTempAndWeatherCodeContainer, styles);
 
@@ -351,13 +353,13 @@ export default class Day {
         let dateContainer = document.createElement('div');
         dateContainer.id = "dateContainer" + this.dayNumber;
 
-        let styles = {
-            height : "45px",
-            width : "55%",
-            marginLeft :"3px",       
-            marginTop :"6px",       
+        let styles = {    
             border : "1px solid white",
             fontSize : "18px",
+            gridColumnStart : "2",
+            gridColumnEnd : "4",
+            gridRowStart : "1",
+            gridRowEnd : "2", 
         }
         setStylesOnElement(dateContainer, styles);
 
@@ -388,29 +390,6 @@ export default class Day {
                 dateText = "Не скоро";
                 break;
         }
-
-        
-        
-        // currentHourAndMinutes is used to display user current time in Current Day container
-        // setTimeout(this.currentHourAndMinutes(), 1000)
-        // this.currentHourAndMinutes = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Moscow' }).substring(12, 17).toString();
-        
-        
-        // function display_c(){
-        //     setTimeout('display_ct()', 1000)
-        // }
-        
-        // let timeRefreshable = display_ct();
-
-        // function display_ct() {
-        //     let x = new Date();
-        //     document.getElementById('heh').innerHTML = x;
-        //     display_c();
-        //     // return 
-            
-        // }
-
-        
 
         let dateActualDate = `<span>${dateText} <br> ${this.currentDateRussianFormat}</span>
         ${this.dayNumber === 3 ? `<span id="clock" 
@@ -461,28 +440,45 @@ export default class Day {
 
     }
 
-    createSunraiseSunsetContainer() {
+    createSunriseSunsetContainer() {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
-        let sunraiseSunsetContainer = document.createElement('div');
-        sunraiseSunsetContainer.id = "sunraiseSunsetContainer" + this.dayNumber;
+        let sunriseSunsetContainer = document.createElement('div');
+        sunriseSunsetContainer.id = "sunriseSunsetContainer" + this.dayNumber;
 
-        let styles = {
-            height : "25px",
-            width : "50%",
-            marginLeft :"3px",       
-            marginTop :"6px",       
+        let styles = {      
             border : "1px solid white",
             fontSize : "18px",
-            alignSelf : "flex-end",
+            gridColumnStart : "1",
+            gridColumnEnd : "3",
+            gridRowStart : "3",
+            gridRowEnd : "4", 
         }
-        setStylesOnElement(sunraiseSunsetContainer, styles);
+        setStylesOnElement(sunriseSunsetContainer, styles);
 
         if (this.dayNumber !== 1) {  //exclude first day as it isn't possible calculate how first
             // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
-            sunraiseSunsetContainer.innerHTML = this.sunDailyDeltaText;
+            sunriseSunsetContainer.innerHTML = this.sunDailyDeltaText;
         }
         
-        generalInfoContainer.appendChild(sunraiseSunsetContainer);
+        generalInfoContainer.appendChild(sunriseSunsetContainer);
     }
 
+    createWindCloudHumidityPressureContainer() {
+        let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
+        let windCloudHumidityPressureContainer = document.createElement('div');
+        windCloudHumidityPressureContainer.id = "windCloudHumidityPressureContainer" + this.dayNumber;
+
+        let styles = {
+            float : "right",
+            border : "1px solid white",
+            fontSize : "18px",
+            gridColumnStart : "2",
+            gridColumnEnd : "4",
+            gridRowStart : "2",
+            gridRowEnd : "3",    
+        }
+        setStylesOnElement(windCloudHumidityPressureContainer, styles);
+        
+        generalInfoContainer.appendChild(windCloudHumidityPressureContainer);
+    }
 }

@@ -2,13 +2,13 @@
 
 import express from "express";
 const app = express();
-import {sup, heh} from "./middle.mjs";
+import {testMiddleFunc1, testMiddleFunc2} from "./middle.mjs";
 import cors from "cors";
 import fetch from 'node-fetch';
 import fs from "fs";
 
-app.use(sup); // this is just testing middle function for all requests
-app.use(heh); // this is just testing middle function for all requests
+app.use(testMiddleFunc1); // this is just testing middle function for all requests
+app.use(testMiddleFunc2); // this is just testing middle function for all requests
 app.use(cors());
 
 let optionsForStatic = {
@@ -24,18 +24,6 @@ let optionsForStatic = {
 };
 
 app.use(express.static("dist", optionsForStatic));
-
-// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2"
-// fetch(url)
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         appendData(data); // json taken only from here, not from outside
-//     })
-//     .catch(function (err) {
-//         console.log(err);
-//     });
 
 function loadDataFromOpenMeteo() {
     let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2"
@@ -68,7 +56,7 @@ app.get("/getWeatherData", (req, res) => { // save JSON on server, then clients 
     }
 });
 
-app.get("/hey",(req, res) => { // sup, heh, 
+app.get("/hey",(req, res) => { // testMiddleFunc1, testMiddleFunc2, 
     
     let s = "hi";
     res.send(`<p>${s}</p>`);
