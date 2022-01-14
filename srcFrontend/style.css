@@ -43,7 +43,6 @@ div[id*="swiperPagination"] {
 
 .swiper-slide {
   text-align: center;
-  font-size: 18px;
   /* background: #fff; */
 
   /* Center slide text vertically */
@@ -80,19 +79,45 @@ div[id*="swiperPagination"] {
   /* align-content: flex-start; */
 }
 
+.dayDailyTemp2m {
+  font-size : 24px;
+}
 
+#clock {
+  font-size: 16px;
+  line-height: inherit;
+}
 
 /* for desktop */
 @media only screen and (min-width: 768px) {
-  .dayContainerClass {
-      width: 500px;
-      margin: 20px;
-  }
 
-  #mainContainer {
-    justify-content:flex-start;
-    align-items:flex-start;
-    /* align-content: flex-start; */
-  }
+body {
+  font-size: 18px;
+}
+
+
+#clock {
+  font-size: 25px;
+  line-height: 10px;
+}
+
+
+.dayContainerClass {
+    width: 500px;
+    margin: 20px;
+    
+}
+
+#mainContainer {
+  justify-content:flex-start;
+  align-items:flex-start;
+  /* align-content: flex-start; */
+}
+
+.dayDailyTemp2m {
+  font-size : 32px;
+}
+
+  
 
 }

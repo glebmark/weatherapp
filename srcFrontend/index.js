@@ -10,54 +10,47 @@ import './iconsSCSS/styleSnowyWeather.scss';
 import './iconsSCSS/styleThunderstormWeather.scss';
 
 import Day from './classDay.js';
+import {setStylesOnElement, } from './service.js';
 
 // mainContainer is needed to fit all 7-9 dayContainers
 let mainContainer = document.createElement('div');
 mainContainer.id = "mainContainer";
-// mainContainer.style.border = "1px solid black";
-mainContainer.style.width = "100%";
-mainContainer.style.height = "100%";
-mainContainer.style.position = "relative";
-mainContainer.style.top = "40px";
-mainContainer.style.display = "flex";
-mainContainer.style.minWidth = "0";
-mainContainer.style.flexDirection = "row";
-mainContainer.style.flexWrap = "wrap";
-// mainContainer.style.justifyContent = "flex-start";
-// mainContainer.style.alignItems = "center";
-// mainContainer.style.alignContent = "flex-start";
+let stylesMain = {
+    width : "100%",
+    height : "100%",
+    position : "relative",
+    top : "40px",
+    display : "flex",
+    minWidth : "0",
+    flexDirection : "row",
+    flexWrap : "wrap",
+}
+setStylesOnElement(mainContainer, stylesMain);
 document.body.appendChild(mainContainer);
 
 let header = document.createElement('header');
 header.id = "header";
-// mainContainer.style.border = "1px solid black";
-header.style.minWidth = "100%";
-header.style.height = "30px";
-header.style.position = "fixed";
-header.style.border = "1px solid black";
-header.style.backgroundColor = "#b2c8ff";
-header.style.zIndex = "199";
-header.style.color = "#272932";
-header.style.fontSize = "20px";
-header.style.top = "-1px";
-header.style.left = "0px";
-header.style.display = "flex";
-header.style.alignItems = "center";
-header.style.justifyContent = "space-evenly";
-header.innerText = "Weather forecast"
+header.innerText = "Weather forecast for Moscow";
+let stylesHeader = {
+    minWidth : "100%",
+    height : "30px",
+    position : "fixed",
+    border : "1px solid black",
+    backgroundColor : "#b2c8ff",
+    zIndex : "199",
+    color : "#272932",
+    fontSize : "20px",
+    top : "-1px",
+    left : "0px",
+    display : "flex",
+    alignItems : "center",
+    justifyContent : "space-evenly",   
+}
+setStylesOnElement(header, stylesHeader);
 document.body.appendChild(header);
 
-let o = {};
-console.log(o)
-
-
-// fetch data
-// let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2";
-// let url = "http://www.glebmark.com/getWeatherData";
-let url = "http://localhost:3005/getWeatherData";
-
-// let url = 'logs.json';
-// const url = require('./logs.json');
+let url = "http://www.glebmark.com/getWeatherData";
+// let url = "http://localhost:3005/getWeatherData";
 
 fetch(url)
     .then(function (response) {
@@ -88,13 +81,11 @@ function appendData(data) {
         // load data to corresponding objects - instances of Day
         window["day" + i].addTime(data.hourly.time.splice(0, currentDay.length));
 
-        window["day" + i].addInstanceSwiper();
-
         window["day" + i].addWindspeed_10m(data.hourly.windspeed_10m.splice(0, currentDay.length));
         
         window["day" + i].addTemperature_2m(data.hourly.temperature_2m.splice(0, currentDay.length));
 
-        window["day" + i].addPrecipitation(data.hourly.precipitation.splice(0, currentDay.length));
+        window["day" + i].addPressure(data.hourly.pressure_msl.splice(0, currentDay.length));
 
         window["day" + i].addRelativehumidity_2m(data.hourly.relativehumidity_2m.splice(0, currentDay.length));
 
@@ -104,11 +95,12 @@ function appendData(data) {
                         // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
             window["day" + i].addSunriseSunset(data.daily.sunrise[i-1], data.daily.sunrise[i-2], data.daily.sunset[i-1], data.daily.sunset[i-2])
         }
+
+        window["day" + i].addCloudCover(data.hourly.cloudcover.splice(0, currentDay.length));
         
         
 
 
-        
 
         // create DOM elements
         window["day" + i].createDayContainer();
@@ -125,12 +117,11 @@ function appendData(data) {
 
         window["day" + i].createTempContainer();
 
+        window["day" + i].createInstanceSwiper();
+
         window["day" + i].createSwiperHours();
 
-
         console.log(window["day" + i]);
+
     }   
 }
-// window.onload = textDisplay;
-console.log("script loaded");
-// swiper.update();
