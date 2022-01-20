@@ -71,7 +71,6 @@ export default function iconSwitch(weatherCodeString) {
                 </div>
             </div>
         </div>`;
-            console.log(weatherHTML);
             break;
         case 51:
         case 53:

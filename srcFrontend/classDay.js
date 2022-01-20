@@ -407,7 +407,7 @@ export default class Day {
             case 7:
             case 8:
             case 9:
-                dateText = "Когда-то";
+                dateText = "Не скоро";
                 break;
         }
 
@@ -441,7 +441,7 @@ export default class Day {
                 minutes = (time.minutes < 10 ? '0' + time.minutes : time.minutes);
                 seconds = (time.seconds < 10 ? '0' + time.seconds : time.seconds);
                 
-                clock.innerText = `${"\u00a0".repeat(2)}` + time.hours + ':' + minutes + ':' + seconds;
+                clock.innerText = `${"\u00a0".repeat(1)}` + time.hours + ':' + minutes + ':' + seconds;
                 
                 window.setTimeout(tick, 1000);
 
@@ -489,7 +489,7 @@ export default class Day {
         setStylesOnElement(windCloudHumidityPressureContainer, styles);
         
 
-        
+
         let windCloudHumidityPressureStyles = {
             // border : "1px solid white",
             height: "50px",

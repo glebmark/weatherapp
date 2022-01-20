@@ -52,16 +52,49 @@ document.body.appendChild(header);
 let url = "http://www.glebmark.com/getWeatherData";
 // let url = "http://localhost:3005/getWeatherData";
 
+// fetch(url)
+//     .then(function (response) {
+//         return response.json();
+//     })
+//     .then(function (data) {
+//         appendData(data); // json taken only from here, not from outside
+//     })
+//     .catch(function (err) {
+//         console.log(err);
+//     });
+
+
 fetch(url)
-    .then(function (response) {
+    .catch (e => wait(500).then(fetch(url))) // try second time if there was some network error
+    .then(response => {
+        if (!response.ok) {
+            return null
+        }
+
+        let type = response.headers.get("content-type"); 
+        if (type !== "application/json; charset=UTF-8") {
+            throw new TypeError(`Expected JSON, got ${type}`)
+        }
+
         return response.json();
     })
-    .then(function (data) {
-        appendData(data); // json taken only from here, not from outside
+    .then(data => {
+        if(data) {
+            appendData(data); // json taken only from here, not from outside
+        } else {
+            console.log("Didn't get 2xx and not called appendData")
+        }
+        
     })
-    .catch(function (err) {
-        console.log(err);
-    });
+    .catch(e => {
+        if (e instanceof TypeError) {
+            // fetch() can fail this way if the internet connection is down
+            console.log("Check your internet connection.");
+            console.error(e);
+        } else {
+        // This must be some kind of unanticipated error 
+            console.error(e);
+        } });
 
 function appendData(data) {
     // 7 - is just 7 days of week (in other version 9 - is 7 + 2 past days before)

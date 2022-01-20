@@ -41,3 +41,21 @@ export function setStylesOnElement(element, styles) {
       
         // screenTest(mql);
         // mql.addEventListener('change', screenTest, false);
+
+
+
+
+        // function c1(response) { // callback 1
+
+        //     let p4 = response.json(); 
+        //     return p4; // returns promise 4
+        // }
+
+        // function c2(profile) { // callback 2
+        //     displayUserProfile(profile);
+        // }
+
+        // let p1 = fetch("/api/user/profile"); // promise 1, task 1 
+        // let p2 = p1.then(c1); // promise 2, task 2 
+        // let p3 = p2.then(c2); // promise 3, task 3
+
