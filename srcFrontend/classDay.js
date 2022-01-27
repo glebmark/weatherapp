@@ -262,24 +262,77 @@ export default class Day {
 
         let dayNumberString = this.dayNumber.toString()
 
-        let styles = {
-            height : "200px",
-            width : "100%",
-            position : "relative",
-            overflow : "hidden",
-            // border : "1px solid white",
-            display : "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gridTemplateRows: "repeat(6, 1fr)",
-            gridTemplateAreas : `
-            "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString}"
-            "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-            "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-            "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-            "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-            "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ."
-            `,
+        // let styles = {
+        //     height : "200px",
+        //     width : "100%",
+        //     position : "relative",
+        //     overflow : "hidden",
+        //     // border : "1px solid white",
+        //     display : "grid",
+        //     gridTemplateColumns: "repeat(5, 1fr)",
+        //     gridTemplateRows: "repeat(6, 1fr)",
+        //     gridTemplateAreas : `
+        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString}"
+        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+        //     "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ."
+        //     `,
+        // }
+
+
+        let styles = {};
+        let mql = window.matchMedia('(min-width: 768px)');
+
+        function screenTest(e) {
+          if (e.matches) {
+            /* the viewport is 768 pixels wide or more */
+            styles = {
+                height : "200px",
+                width : "100%",
+                position : "relative",
+                overflow : "hidden",
+                // border : "1px solid white",
+                display : "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gridTemplateRows: "repeat(6, 1fr)",
+                gridTemplateAreas : `
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} . ."
+                `, // there 3 SunSC, while in mobile 5
+            }
+          } else {
+            /* the viewport is less than 768 pixels wide */
+            styles = {
+                height : "200px",
+                width : "100%",
+                position : "relative",
+                overflow : "hidden",
+                // border : "1px solid white",
+                display : "grid",
+                gridTemplateColumns: "repeat(6, 1fr)", // added one more column
+                gridTemplateRows: "repeat(6, 1fr)",
+                gridTemplateAreas : `
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
+                "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ."
+                `,
+            }
+          }
         }
+        
+        screenTest(mql);
+        mql.addEventListener('change', screenTest, false);
+
+
 
         
         setStylesOnElement(generalInfoContainer, styles);
@@ -309,8 +362,10 @@ export default class Day {
         // dayDailyTemp2m.style.order = "3";
         LargeTempAndWeatherCodeContainer.appendChild(dayDailyTemp2m);
 
+
         let dailyWeatherCodeMainContainer = document.createElement('div');
-        dailyWeatherCodeMainContainer.style.height = "100%";
+        dailyWeatherCodeMainContainer.classList.add("dailyWeatherCodeMainContainer");
+        // height has been moved to style.css
         dailyWeatherCodeMainContainer.style.width = "60%";
         // dailyWeatherCodeMainContainer.style.order = "0";
 
@@ -419,7 +474,7 @@ export default class Day {
         dateContainer.innerHTML = dateActualDate;
         generalInfoContainer.appendChild(dateContainer);
         
-        
+
         if (this.dayNumber === 3) {
             let time = {};
 

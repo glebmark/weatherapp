@@ -65,7 +65,6 @@ let url = "http://www.glebmark.com/getWeatherData";
 
 
 fetch(url)
-    .catch (e => wait(500).then(fetch(url))) // try second time if there was some network error
     .then(response => {
         if (!response.ok) {
             return null
@@ -84,17 +83,8 @@ fetch(url)
         } else {
             console.log("Didn't get 2xx and not called appendData")
         }
-        
     })
-    .catch(e => {
-        if (e instanceof TypeError) {
-            // fetch() can fail this way if the internet connection is down
-            console.log("Check your internet connection.");
-            console.error(e);
-        } else {
-        // This must be some kind of unanticipated error 
-            console.error(e);
-        } });
+    .catch(e => console.error(e));
 
 function appendData(data) {
     // 7 - is just 7 days of week (in other version 9 - is 7 + 2 past days before)

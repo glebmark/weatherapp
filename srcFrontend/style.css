@@ -88,6 +88,10 @@ div[id*="swiperPagination"] {
   line-height: inherit;
 }
 
+.dailyWeatherCodeMainContainer {
+  height: 90%;
+}
+
 /* for desktop */
 @media only screen and (min-width: 768px) {
 
@@ -118,6 +122,9 @@ body {
   font-size : 32px;
 }
 
+.dailyWeatherCodeMainContainer {
+  height: 100%;
+}
   
 
 }
