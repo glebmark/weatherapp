@@ -68,12 +68,12 @@ div[id*="swiperPagination"] {
   object-fit: cover;
 }
 
-.dayContainerClass {
+.dayContainerClass, .buttonsPrevContainerClass {
   width: 90%;
   margin: 10px;
 }
 
-#mainContainer {
+#mainContainer, #prevMainContainer  {
   justify-content:space-evenly;
   align-items:flex-start;
   /* align-content: flex-start; */
@@ -92,6 +92,24 @@ div[id*="swiperPagination"] {
   height: 90%;
 }
 
+/* div[class*="buttonsPrevContainerClass"]:hover {
+  background-color: black;
+} */
+
+#buttonYesterday {
+  position: static;
+}
+
+#buttonYesterday:hover {
+  background-color: #b2c8ff;
+  color: black;
+}
+
+#buttonDayBeforeYesterday {
+  /* position: absolute; */
+  display: none;
+}
+
 /* for desktop */
 @media only screen and (min-width: 768px) {
 
@@ -106,13 +124,13 @@ body {
 }
 
 
-.dayContainerClass {
+.dayContainerClass, .buttonsPrevContainerClass {
     width: 500px;
     margin: 20px;
     
 }
 
-#mainContainer {
+#mainContainer, #prevMainContainer {
   justify-content:flex-start;
   align-items:flex-start;
   /* align-content: flex-start; */
@@ -125,6 +143,14 @@ body {
 .dailyWeatherCodeMainContainer {
   height: 100%;
 }
-  
+ 
+#buttonYesterday {
+  position: absolute;
+}
+
+#buttonDayBeforeYesterday {
+  display: block;
+  /* position: static; */
+}
 
 }

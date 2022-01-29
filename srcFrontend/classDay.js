@@ -136,6 +136,7 @@ export default class Day {
 
     createDayContainer() {
         let mainContainer = document.getElementById("mainContainer");
+        let prevMainContainer = document.getElementById("prevMainContainer");
         let dayContainer = document.createElement('div');
         dayContainer.id = "dayContainer" + this.dayNumber;
         this.dayContainer = dayContainer;
@@ -144,7 +145,6 @@ export default class Day {
         let styles = {
             border : "3px solid #b2c8ff",
             height : "300px",
-            display : "flex",
             flexDirection : "row",
             flexWrap : "wrap",
             justifyContent : "space-evenly",
@@ -155,8 +155,14 @@ export default class Day {
             borderBottomLeftRadius : "60px 40px",
         }
         setStylesOnElement(dayContainer, styles);
-
-        mainContainer.appendChild(dayContainer);
+        
+        if (this.dayNumber === 1 || this.dayNumber === 2) {
+            dayContainer.style.display = "none";
+            prevMainContainer.appendChild(dayContainer);
+        } else {
+            dayContainer.style.display = "flex";
+            mainContainer.appendChild(dayContainer);
+        }
     }
 
     createTempContainer() {
@@ -531,6 +537,7 @@ export default class Day {
     createWindCloudHumidityPressureContainer() {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let windCloudHumidityPressureContainer = document.createElement('div');
+        
         windCloudHumidityPressureContainer.style.gridArea = "WCHPC" + this.dayNumber;
 
         let styles = {
