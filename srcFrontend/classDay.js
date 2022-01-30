@@ -15,7 +15,6 @@ export default class Day {
         
     }
 
-    
     addTemperature_2m(temperature_2m) {
         this.temp2m = temperature_2m;
         
@@ -88,7 +87,7 @@ export default class Day {
         this.weatherCodeAverage = getMostFrequent(this.weatherCodeHourlyWithoutNight)
     }
 
-    addSunriseSunset(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday) {
+    addSunriseSunsetDifference(sunriseToday, sunriseYesterday, sunsetToday, sunsetYesterday) {
         // let sunriseT = Date.parse("2022-01-11T08:50");
         // let sunriseY = Date.parse("2022-01-10T08:51");
         let sunriseT = Date.parse(sunriseToday);
@@ -132,6 +131,32 @@ export default class Day {
         }
 
         
+    }
+
+    addSunriseSunsetToday(sunriseToday, sunsetToday) {
+        this.sunRiseToday = sunriseToday;
+        this.sunSetToday = sunsetToday;
+
+        this.timePlusSunsetSunrise = [...this.time];
+        
+        this.indexOfHourSunRise = this.time.findIndex(str => str.includes(this.sunRiseToday.substring(11, 14)));
+        this.timePlusSunsetSunrise.splice(this.indexOfHourSunRise + 1, 0, this.sunRiseToday);
+        this.indexOfSlideWithSunRise = this.indexOfHourSunRise + 1; // it's used only in Swiper initialization
+        console.log(this.indexOfSlideWithSunRise)
+        
+        this.indexOfHourSunSet = this.timePlusSunsetSunrise.findIndex(str => str.includes(this.sunSetToday.substring(11, 14)));
+        this.timePlusSunsetSunrise.splice(this.indexOfHourSunSet + 1, 0, this.sunSetToday);
+
+        
+        
+
+        
+        this.temp2mPlusSunriseSunset = [...this.temp2m];
+
+        this.temp2mPlusSunriseSunset.splice(this.indexOfHourSunRise + 1, 0, 0);        
+        this.temp2mPlusSunriseSunset.splice(this.indexOfHourSunSet + 1, 0, 0);
+
+
     }
 
     createDayContainer() {
@@ -183,6 +208,7 @@ export default class Day {
 
     createInstanceSwiper() {
         let dayNumber = this.dayNumber;
+        let indexOfSlideWithSunRise = this.indexOfSlideWithSunRise;
         window.setTimeout(function(){
             const swiper = new Swiper(`#mySwiper${dayNumber}`, {
                 observer: true, 
@@ -190,6 +216,7 @@ export default class Day {
                 slidesPerView: 3,
                 spaceBetween: 0,
                 slidesPerGroup: 3,
+                initialSlide: indexOfSlideWithSunRise,
                 // loop: true,
                 loopFillGroupWithBlank: true,
         
@@ -211,26 +238,47 @@ export default class Day {
     createSwiperHours() {
         let swiper = document.createElement('div');
         let dayNumber = this.dayNumber;
-        let temp2m = this.temp2m;
         swiper.classList.add("swiper");
         swiper.id = `mySwiper${dayNumber}`
         swiper.style.height = "65px";
         swiper.style.width = "85%";
         let tempContainer = document.getElementById("tempContainer" + dayNumber);
         tempContainer.appendChild(swiper);
-
+        
         let swiperWrapper = document.createElement('div');
         swiperWrapper.classList.add("swiper-wrapper");
         swiper.appendChild(swiperWrapper);
         
-        this.time.forEach(function(hour, i) {  
+        
+
+        let sunRiseToday = this.sunRiseToday;
+        let sunSetToday = this.sunSetToday;
+        let indexOfHourSunRise = this.indexOfHourSunRise;
+        let indexOfHourSunSet = this.indexOfHourSunSet;
+        let temp2mPlusSunriseSunset = this.temp2mPlusSunriseSunset;
+
+        this.timePlusSunsetSunrise.forEach(function(hour, i) {  
             
             let tempListItem = document.createElement('div');
             tempListItem.classList.add('swiper-slide');
-            // tempListItem.style.display = "inline-block";
-            let slideHour = hour.substring(11, 16).toString();
-            let slideTemp2m = temp2m[i].toString();
-            tempListItem.innerText = slideHour + "\n" + slideTemp2m + "\u00B0";
+            
+            if (i === indexOfHourSunRise + 1) {
+                tempListItem.innerText = sunRiseToday.substring(11, 16) + "\n" + "Рассвет";
+            } else if (i === indexOfHourSunSet + 1) {
+                tempListItem.innerText = sunSetToday.substring(11, 16) + "\n" + "Закат";
+            } else {
+                let slideHour = hour.substring(11, 16);
+                let slideTemp2m = temp2mPlusSunriseSunset[i].toString();
+                tempListItem.innerText = slideHour + "\n" + slideTemp2m + "\u00B0";
+            }
+
+            // let gradientListItem = document.createElement('canvas');
+            // gradientListItem.style.display = "inline";
+            // gradientListItem.fillStyle = 'rgb(255, 150, 150)';
+            // tempListItem.style.backgroundColor = "rgb(242, 240, 35)";
+            // tempListItem.fillStyle = 'rgb(242, 240, 35)';
+
+            // tempListItem.appendChild(gradientListItem);
             swiperWrapper.appendChild(tempListItem);
         });
 
@@ -267,26 +315,6 @@ export default class Day {
         generalInfoContainer.classList.add("generalInfoContainerClass");
 
         let dayNumberString = this.dayNumber.toString()
-
-        // let styles = {
-        //     height : "200px",
-        //     width : "100%",
-        //     position : "relative",
-        //     overflow : "hidden",
-        //     // border : "1px solid white",
-        //     display : "grid",
-        //     gridTemplateColumns: "repeat(5, 1fr)",
-        //     gridTemplateRows: "repeat(6, 1fr)",
-        //     gridTemplateAreas : `
-        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString} ${'DateC' + dayNumberString}"
-        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-        //     "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-        //     "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ."
-        //     `,
-        // }
-
 
         let styles = {};
         let mql = window.matchMedia('(min-width: 768px)');

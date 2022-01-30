@@ -284,8 +284,10 @@ function appendData(data) {
         
         if (i !== 1) { //exclude first day as it isn't possible calculate how first
                         // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
-            window["day" + i].addSunriseSunset(data.daily.sunrise[i-1], data.daily.sunrise[i-2], data.daily.sunset[i-1], data.daily.sunset[i-2])
+            window["day" + i].addSunriseSunsetDifference(data.daily.sunrise[i-1], data.daily.sunrise[i-2], data.daily.sunset[i-1], data.daily.sunset[i-2])
         }
+
+        window["day" + i].addSunriseSunsetToday(data.daily.sunrise[i-1], data.daily.sunset[i-1]);
 
         window["day" + i].addCloudCover(data.hourly.cloudcover.splice(0, currentDay.length));
         
