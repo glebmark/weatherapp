@@ -35,7 +35,6 @@ let stylesPrevMain = {
 }
 setStylesOnElement(prevMainContainer, stylesPrevMain);
 
-
 let stylesButtons = {
     border : "3px solid #b2c8ff",
     height : "50px",
@@ -56,7 +55,6 @@ buttonDayBeforeYesterday.id = "buttonDayBeforeYesterday";
 setStylesOnElement(buttonDayBeforeYesterday, stylesButtons);
 prevMainContainer.appendChild(buttonDayBeforeYesterday);
 
-
 let buttonYesterday = document.createElement('div');
 buttonYesterday.classList.add("buttonsPrevContainerClass");
 buttonYesterday.id = "buttonYesterday";
@@ -67,8 +65,6 @@ buttonYesterday.innerText = "Ранее"
 buttonYesterday.style.display = "flex";  
 setStylesOnElement(buttonYesterday, stylesButtons);
 prevMainContainer.appendChild(buttonYesterday);
-
-
 document.body.appendChild(prevMainContainer);
 
 document.querySelectorAll(".buttonsPrevContainerClass").forEach(button => {
@@ -76,23 +72,17 @@ document.querySelectorAll(".buttonsPrevContainerClass").forEach(button => {
     button.addEventListener("click", () => {
         
         buttonYesterday.style.backgroundColor = "transparent";
-        buttonYesterday.style.color = "inherit";
-        
-        
+        buttonYesterday.style.color = "inherit";        
         buttonYesterday.innerText = "Позавчера" // only for mobile, then rewrite for desktop down below
 
-
         let mql = window.matchMedia('(min-width: 768px)');
-
         function screenTest(e) {
           if (e.matches) {
             /* the viewport is 768 pixels wide or more */
 
             buttonDayBeforeYesterday.innerText = "Позавчера"
             buttonDayBeforeYesterday.style.display = "flex";
-
             buttonYesterday.innerText = "Вчера" 
-
 
             // animation of Yesterday button to the right
             let id = null;
@@ -128,9 +118,6 @@ document.querySelectorAll(".buttonsPrevContainerClass").forEach(button => {
         screenTest(mql);
         mql.addEventListener('change', screenTest, false);
 
-        
-        
-    
         setTimeout(() => {
             prevMainContainer.style.height = "";
 
@@ -139,17 +126,11 @@ document.querySelectorAll(".buttonsPrevContainerClass").forEach(button => {
             buttonDayBeforeYesterday.style.transitionTimingFunction = "ease",
             buttonDayBeforeYesterday.style.position = "static";
             
-            
             buttonYesterday.style.height = "300px";
             buttonYesterday.style.transition =  "all 1s",
             buttonYesterday.style.transitionTimingFunction = "ease"
             buttonYesterday.style.position = "static";
-    
-
-            
-
         }, 1500)
-
 
         setTimeout(() => {
             buttonDayBeforeYesterday.style.display = "none";
@@ -158,22 +139,9 @@ document.querySelectorAll(".buttonsPrevContainerClass").forEach(button => {
             dayContainer1.style.display = "flex";
             let dayContainer2 = document.getElementById("dayContainer2");
             dayContainer2.style.display = "flex";
-
-            
-            
-        }, 2500)
-        
-        
-        
-        
-        // prevMainContainer.style.display = "flex";
-        // prevMainContainer.style.height = "100%";
-        
+        }, 2500)        
     })
 })
-
-console.log(document.querySelectorAll(".buttonsPrevContainerClass"))
-
 
 
 
@@ -219,18 +187,6 @@ document.body.appendChild(header);
 
 let url = "http://www.glebmark.com/getWeatherData";
 // let url = "http://localhost:3005/getWeatherData";
-
-// fetch(url)
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         appendData(data); // json taken only from here, not from outside
-//     })
-//     .catch(function (err) {
-//         console.log(err);
-//     });
-
 
 fetch(url)
     .then(response => {
