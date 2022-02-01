@@ -100,7 +100,7 @@ div[id*="swiperPagination"] {
   position: static;
 }
 
-#buttonYesterday:hover {
+#buttonYesterday:hover, .tableBodyRow:hover {
   background-color: #b2c8ff;
   color: black;
 }
@@ -117,12 +117,15 @@ body {
   font-size: 18px;
 }
 
-
 #clock {
   font-size: 20px;
   line-height: 10px;
 }
 
+td, th {
+  text-align: left;
+  padding: 10px;
+}
 
 .dayContainerClass, .buttonsPrevContainerClass {
     width: 500px;
