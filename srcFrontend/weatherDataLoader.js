@@ -4,8 +4,8 @@ import {createPrevMainContainer, createMainContainerAndHeader, } from './mainDOM
 export function getWeatherData(cityValues) {
         
     // let url = "http://www.glebmark.com/weatherData";
-    let url = `http://www.glebmark.com/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}`;
-    // let url = `http://localhost:3005/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}`;
+    // let url = `http://www.glebmark.com/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}`;
+    let url = `http://localhost:3005/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}&name=${cityValues.name}`;
 
     fetch(url)
         .then(response => {
@@ -36,12 +36,13 @@ export function getWeatherData(cityValues) {
             if (prevMainContainer && mainContainer) {
                 prevMainContainer.remove();
                 mainContainer.remove();
-                // createPrevMainContainer(); // called from ./mainDOM.js
-                // createMainContainerAndHeader(); // called from ./mainDOM.js
             }
 
-            // prevMainContainer.remove();
-            // mainContainer.remove();
+            let geoCurrentCity = document.getElementById("geoCurrentCity");
+            // geoCurrentCity.innerText = data.cityName;
+            let locationPicture = '<svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"/><circle cx="12" cy="9" r="2.5"/></svg>';
+            geoCurrentCity.innerHTML = `<span>${locationPicture}</span><div>\u00a0\u00a0${data.cityName}</div>`;
+
             createPrevMainContainer(); // called from ./mainDOM.js
             createMainContainerAndHeader(); // called from ./mainDOM.js
 
@@ -60,7 +61,7 @@ export function getWeatherData(cityValues) {
                 window["day" + i] = new Day(i);
 
                 // load data to corresponding objects - instances of Day
-                window["day" + i].addTime(data.hourly.time.splice(0, currentDay.length));
+                window["day" + i].addTime(data.hourly.time.splice(0, currentDay.length), data.localTimeZone);
 
                 window["day" + i].addWindspeed_10m(data.hourly.windspeed_10m.splice(0, currentDay.length));
                 

@@ -42,17 +42,34 @@ export function createGeoContainer() {
     geoTextButton.type = "button";
     geoTextButton.value = "Найти";
 
-    geoTextButton.addEventListener("click", () => {
+    geoTextButton.addEventListener("click", requestGeoLocation);
+    geoTextInput.addEventListener("keydown", requestGeoLocation);
+
+    function requestGeoLocation(keydown) {
+        
+        
+        console.log(keydown)
+
+        if (keydown.key === "Enter") {
+            console.log("it's Enter");
+            keydown.preventDefault();
+        }
+
+        if (keydown.key) {
+            if (keydown.key !== "Enter") {
+                console.log("it's return")
+                return
+            }
+        }
+        
         
 
         let oldTable = document.getElementById("tableCities");
         if (oldTable) {
             oldTable.remove();
         }
-        
-        
-        let url = `http://www.glebmark.com/geoLocation?name=${geoTextInput.value}`;
-        // let url = `http://localhost:3005/geoLocation?name=${geoTextInput.value}`;
+        // let url = `http://www.glebmark.com/geoLocation?name=${geoTextInput.value}`;
+        let url = `http://localhost:3005/geoLocation?name=${geoTextInput.value}`;
         
         fetch(url)
         .then(response => {
@@ -76,11 +93,10 @@ export function createGeoContainer() {
         })
         .catch(e => console.error(e));
 
-    })
+    }
 
 
     function appendGeo(data) {
-        console.log(data)
         let geoListOfAllAvailableCities = document.getElementById("geoListOfAllAvailableCities");
         geoListOfAllAvailableCities.style.display = "flex";
 
@@ -111,7 +127,6 @@ export function createGeoContainer() {
                 tableBodyRow.classList.add("tableBodyRow");
 
                 tableBodyRow.addEventListener("click", () => {
-                    console.log(city.latitude)
 
                     let cityValues = {
                         name: city.name,
@@ -173,25 +188,25 @@ export function createGeoContainer() {
 
     let geoCurrentCity = document.createElement('div');
     geoCurrentCity.id = "geoCurrentCity";
-    geoCurrentCity.innerText = "Текущий город"
+    // geoCurrentCity.innerText = "Текущий город"
     let stylesGeoCurrentCity = {
-        width : "33%",
+        width : "50%",
         height : "50px",
         // marginLeft : "20px",
         // position : "relative",
         // top : "40px",
-        // display : "flex",
-        // flexDirection : "row",
+        display : "flex",
+        flexDirection : "row",
         // flexWrap : "wrap",
-        // justifyContent: "space-around",
-        // alignItems: "center",
+        justifyContent: "flex-start",
+        alignItems: "center",
         
         
-        border : "3px solid #b2c8ff",
-        borderTopRightRadius : "60px 40px",
-        borderTopLeftRadius : "60px 40px",
-        borderBottomRightRadius : "60px 40px",
-        borderBottomLeftRadius : "60px 40px",
+        // border : "3px solid #b2c8ff",
+        // borderTopRightRadius : "60px 40px",
+        // borderTopLeftRadius : "60px 40px",
+        // borderBottomRightRadius : "60px 40px",
+        // borderBottomLeftRadius : "60px 40px",
 
     }
     setStylesOnElement(geoCurrentCity, stylesGeoCurrentCity);

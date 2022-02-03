@@ -51,11 +51,15 @@ export default class Day {
         this.averageDailyhumidity = Math.round(sumDayDailyhumidity.reduce((acc, v) => acc + v) / sumDayDailyhumidity.length);    
     }
     
-    addTime (time) {
+    addTime (time, localTimeZone) {
         this.time = time;
+        this.localTimeZone = localTimeZone;
 
         // where -3 is minus current, yesterday, day before yesterday
-        let date = new Date(new Date().getTime() + (this.dayNumber - 3) * (24 * 60 * 60 * 1000));
+        let localDate = new Date().toLocaleString('en-US', { timeZone: this.localTimeZone });
+        let localDateObj = new Date(localDate);
+        let localTimeStamp = localDateObj.getTime();
+        let date = new Date(localTimeStamp + (this.dayNumber - 3) * (24 * 60 * 60 * 1000));
         let formatter = new Intl.DateTimeFormat("ru", {
             weekday: "long",
             // year: "numeric",
@@ -64,10 +68,17 @@ export default class Day {
           });
         this.currentDateRussianFormat = formatter.format(date);
 
+
+        
+
+
+        
         // currentHour is used to match with hours in Current Day in array from JSON taken from Open Meteo
-        this.currentHour = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Moscow' }).substring(12, 14).toString();
-        let currentHourString = this.currentHour.toString();
-        this.indexOfCurrentHour = this.time.findIndex(v => v.substring(11, 13) === currentHourString); 
+        let currentDate = new Date().toLocaleString('en-GB', {timeZone: localTimeZone});
+        let currentDateObj = new Date(currentDate);
+
+        let currentDateString = currentDateObj.toString().substring(16, 18);
+        this.indexOfCurrentHour = this.time.findIndex(v => v.substring(11, 13) === currentDateString); 
     }
 
     addWeatherCode(weatherCode) {
@@ -484,6 +495,7 @@ export default class Day {
     createDateContainer() {
         let generalInfoContainer = document.getElementById("generalInfoContainer" + this.dayNumber);
         let dateContainer = document.createElement('div');
+        let selfThis = this;
 
         let styles = {    
                 // border : "1px solid white",
@@ -521,7 +533,7 @@ export default class Day {
         }
 
         let dateActualDate = `<span>${dateText} <br> ${this.currentDateRussianFormat}</span>
-        ${this.dayNumber === 3 ? `<span id="clock" 
+        ${this.dayNumber === 3 ? `<span id="clock${selfThis.localTimeZone}" 
                 style="color: #a3e6d1;"></span>` : ""
             }`;
 
@@ -533,24 +545,31 @@ export default class Day {
             let time = {};
 
             (function () {
-            
-            
             (function tick () {
-                let clock = document.getElementById('clock');
-                let seconds, minutes, d = new Date();
-                time.weekday = d.getDay();
-                time.day = d.getDate();
-                time.month = d.getMonth() + 1; //JS says jan = 0
-                time.year = d.getFullYear();
+                // clock + selfThis.localTimeZone is needed because when timezone changed, there
+                // still called callback tick() in queue, so browser starts every tick (every 1000 ms) printing two clocks: old and new. 
+                // That means there two tick() callbacks in queue, which is bad
+                let clock = document.getElementById(`clock${selfThis.localTimeZone}`); 
+                let currentDate = new Date().toLocaleString('en-US', {timeZone: selfThis.localTimeZone});
+                let seconds, minutes, d = new Date(currentDate);
+
+                // time.weekday = d.getDay();
+                // time.day = d.getDate();
+                // time.month = d.getMonth() + 1; //JS says jan = 0
+                // time.year = d.getFullYear();
                 time.minutes = d.getMinutes();
-                time.hours = d.getHours(); //eastern time zone
+                time.hours = d.getHours(); 
                 time.seconds = d.getSeconds();
-                time.ms = d.getMilliseconds();
+                // time.ms = d.getMilliseconds();
                 
                 minutes = (time.minutes < 10 ? '0' + time.minutes : time.minutes);
                 seconds = (time.seconds < 10 ? '0' + time.seconds : time.seconds);
                 
-                clock.innerText = `${"\u00a0".repeat(1)}` + time.hours + ':' + minutes + ':' + seconds;
+                try {
+                    clock.innerText = `${"\u00a0".repeat(1)}` + time.hours + ':' + minutes + ':' + seconds;
+                } catch {
+                    // console.log("Timezone changed, didn't find older clock to write values.")
+                }
                 
                 window.setTimeout(tick, 1000);
 
@@ -558,7 +577,6 @@ export default class Day {
             }()); // This one keeps clock away from the global scope
             // console.log(time.ms); // We have access to all those properties via a single variable.
         }
-
     }
 
     createSunriseSunsetContainer() {
@@ -628,7 +646,7 @@ export default class Day {
         let pressureImage = `<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
 
         
-        
+
         let dayThis = this;
         
         let mql = window.matchMedia('(min-width: 768px)');

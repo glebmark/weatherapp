@@ -29,5 +29,3 @@ getWeatherData(defaultCityValues); // called from ./weatherDataLoader.js
 
 
 
-
-

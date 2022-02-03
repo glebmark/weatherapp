@@ -1,3 +1,5 @@
 **/node_modules
-# **/cities
+**/cashedCitiesGeo
+**/cashedWeatherData
+/dist/bundle.js
 shell.mjs
