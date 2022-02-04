@@ -12,14 +12,14 @@ const testMiddleFunc1 = (req, res, next) => {
     // console.log(req.query); //query string
     // console.log(req.subdomains);
     // console.log(req.params);
-    console.log("sup");
     next();
 }
 
-// only for test
-function testMiddleFunc2(req, res, next) {
-    console.log("testtest")
+let counterAPIreqestsToOpenMeteo = 0;
+function amIexceedAPIlimit(req, res, next) {
+    counterAPIreqestsToOpenMeteo++;
+    console.log("Request to Open Meteo number " + counterAPIreqestsToOpenMeteo)
     next();
 }
 
-export {testMiddleFunc1, testMiddleFunc2};
+export {testMiddleFunc1, amIexceedAPIlimit};

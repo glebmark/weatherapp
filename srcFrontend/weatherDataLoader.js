@@ -33,9 +33,13 @@ export function getWeatherData(cityValues) {
 
             let prevMainContainer = document.getElementById("prevMainContainer");
             let mainContainer = document.getElementById("mainContainer");
+            let header = document.getElementById("header");
+            let footer = document.getElementById("footer");
             if (prevMainContainer && mainContainer) {
                 prevMainContainer.remove();
                 mainContainer.remove();
+                header.remove();
+                footer.remove();
             }
 
             let geoCurrentCity = document.getElementById("geoCurrentCity");

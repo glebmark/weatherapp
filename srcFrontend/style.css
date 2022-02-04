@@ -12,6 +12,31 @@ body {
   padding: 0;
 }
 
+.footerElements {
+  width: 33%;
+  font-size: 12px;
+  display: flex;
+  flex-direction : "row";
+  justify-content: center;
+  align-items: center;
+}
+
+a:any-link {
+  color:#a3e6d1;
+  text-decoration: none;
+}
+
+#geoTextButton:hover {
+  background: #b2c8ff !important;
+  color: black !important; 
+}
+
+::placeholder {
+  color: #b2c8ff;
+  opacity: 0.5;
+  text-indent: 10px;
+}
+
 /* it's needed for disabling default arrows */
 .swiper-button-next::after, .swiper-button-prev::after {
   content: "" !important;
@@ -73,10 +98,20 @@ div[id*="swiperPagination"] {
   margin: 10px;
 }
 
-#mainContainer, #prevMainContainer  {
-  justify-content:space-evenly;
-  align-items:flex-start;
-  /* align-content: flex-start; */
+#mainContainer, #prevMainContainer, #geoMainContainer {
+  justify-content:space-around;
+  align-items:center;
+  margin-left: 0px;
+}
+
+#prevMainContainer {
+  top: 37px;
+}
+
+#geoContainer {
+  min-width: 0px;
+  width : 90%;
+  margin: 10px;
 }
 
 .dayDailyTemp2m {
@@ -130,13 +165,23 @@ td, th {
 .dayContainerClass, .buttonsPrevContainerClass {
     width: 500px;
     margin: 20px;
-    
 }
 
-#mainContainer, #prevMainContainer {
+#mainContainer, #prevMainContainer, #geoMainContainer {
   justify-content:flex-start;
   align-items:flex-start;
-  /* align-content: flex-start; */
+  margin-left: 15px;
+}
+
+#prevMainContainer {
+  top: 25px;
+}
+
+#geoContainer {
+  min-width: 500px;
+  max-width: 1020px;
+  width : 50%;
+  margin: 20px;
 }
 
 .dayDailyTemp2m {

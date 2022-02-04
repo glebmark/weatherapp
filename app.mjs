@@ -2,14 +2,14 @@
 
 import express from "express";
 const app = express();
-import {testMiddleFunc1, testMiddleFunc2} from "./middle.mjs";
+import {testMiddleFunc1, amIexceedAPIlimit} from "./middle.mjs";
 import cors from "cors";
 import fetch from 'node-fetch';
 import fs from "fs";
 // import { waitForDebugger } from "inspector";
 
 app.use(testMiddleFunc1); // this is just testing middle function for all requests
-app.use(testMiddleFunc2); // this is just testing middle function for all requests
+// app.use(amIexceedAPIlimit); // this is just testing middle function for all requests
 app.use(cors());
 
 let optionsForStatic = {
@@ -49,7 +49,7 @@ app.use(express.static("dist", optionsForStatic));
 
 // setInterval(loadDataFromOpenMeteo(defaultCityValues, defaultPath), 3600000) // load data from callback once a hour 3600000
 
-app.get("/weatherData", (req, res) => { // save JSON on server, then clients will take file from here
+app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on server, then clients will take file from here
     
     function isWeatherFileExist(cityValues, pathWeather) {
         try {
@@ -177,7 +177,7 @@ app.get("/weatherData", (req, res) => { // save JSON on server, then clients wil
 });
 
 
-app.get("/geoLocation", (req, res) => { // save JSON on server, then clients will take file from here
+app.get("/geoLocation", amIexceedAPIlimit, (req, res) => { // save JSON on server, then clients will take file from here
     // console.log(req)
 
     function isGeoFileExist(pathGeo) {

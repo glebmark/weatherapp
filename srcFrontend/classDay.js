@@ -175,6 +175,7 @@ export default class Day {
 
         let styles = {
             height : "300px",
+            paddingTop: "5px",
             flexDirection : "row",
             flexWrap : "wrap",
             justifyContent : "space-evenly",
