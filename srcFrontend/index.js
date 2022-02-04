@@ -10,12 +10,9 @@ import './iconsSCSS/styleSnowyWeather.scss';
 import './iconsSCSS/styleThunderstormWeather.scss';
 
 import {createGeoContainer, } from './geocoding.js';
-import {createPrevMainContainer, createMainContainerAndHeader, } from './mainDOM.js';
 import {getWeatherData, } from './weatherDataLoader.js';
 
 createGeoContainer(); // called from ./geocoding.js
-// createPrevMainContainer(); // called from ./mainDOM.js
-// createMainContainerAndHeader(); // called from ./mainDOM.js
 
 let defaultCityValues = {
     name: "Москва",

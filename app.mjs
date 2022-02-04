@@ -6,10 +6,8 @@ import {testMiddleFunc1, amIexceedAPIlimit} from "./middle.mjs";
 import cors from "cors";
 import fetch from 'node-fetch';
 import fs from "fs";
-// import { waitForDebugger } from "inspector";
 
 app.use(testMiddleFunc1); // this is just testing middle function for all requests
-// app.use(amIexceedAPIlimit); // this is just testing middle function for all requests
 app.use(cors());
 
 let optionsForStatic = {
@@ -26,28 +24,6 @@ let optionsForStatic = {
 
 app.use(express.static("dist", optionsForStatic));
 
-
-
-// function appendData(data, path) {
-//     let dataInString = JSON.stringify(data)
-//     fs.writeFile("weatherData.json", dataInString, (err) => {
-//         if (err) throw err;
-//         console.log('Weather data written to file');
-//     })
-// }
-
-// let defaultCityValues = {
-//     name: "Москва",
-//     area: "Москва",
-//     country: "Россия",
-//     latitude: 55.75222,
-//     longitude: 37.61556,
-//     timezone: "Europe/Moscow"
-// };
-
-// let defaultPath = `./cashedWeatherData/weatherDataLatitude${defaultCityValues.latitude}Longitude${defaultCityValues.longitude}.json`;
-
-// setInterval(loadDataFromOpenMeteo(defaultCityValues, defaultPath), 3600000) // load data from callback once a hour 3600000
 
 app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on server, then clients will take file from here
     
@@ -84,7 +60,6 @@ app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on serve
 
 
     function loadDataFromOpenMeteo(cityValues, pathWeather) {
-        // let url = "https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6176&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&windspeed_unit=ms&daily=sunrise,sunset&timezone=Europe%2FMoscow&past_days=2";
         let url = `https://api.open-meteo.com/v1/forecast?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,pressure_msl,precipitation,weathercode,cloudcover,windspeed_10m&windspeed_unit=ms&daily=sunrise,sunset&timezone=${encodeURI(cityValues.timezone)}&past_days=2`;
         fetch(url)
             .then(response => {
@@ -134,21 +109,11 @@ app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on serve
                 }
                 
             })
-            .catch(e => console.error(e));
-    
+            .catch(e => console.error(e));    
     }
 
 
-
-
     let pathWeather = `./cashedWeatherData/weatherDataLatitude${req.query.latitude}Longitude${req.query.longitude}City${req.query.name}.json`;
-
-    // add timezone to weatherData before response + handle it on front side for current CLOCK
-    
-    // load loadDataFromOpenMeteo from here with req
-    console.log("THIS IS LATITUDE" + req.query.latitude);
-    console.log("THIS IS LATITUDE" + req.query.longitude);
-    console.log("THIS IS LATITUDE" + req.query.timezone);
 
     let cityValues = {
         latitude: req.query.latitude,
@@ -157,8 +122,6 @@ app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on serve
         name: req.query.name,
     };
 
-    
-    
     if (isWeatherFileExist(cityValues, pathWeather)) {
         if (!res.headersSent) {
             // res.type("application/json");
@@ -168,12 +131,6 @@ app.get("/weatherData", amIexceedAPIlimit, (req, res) => { // save JSON on serve
     } else {
         loadDataFromOpenMeteo(cityValues, pathWeather)
     }
-
-
-    // if (!res.headersSent) {
-    //     // res.type("application/json");
-    //     res.sendFile("./weatherData.json", { root: "."}); // not __dirname but "." because it's .mjs file
-    // }
 });
 
 
@@ -238,7 +195,6 @@ app.get("/geoLocation", amIexceedAPIlimit, (req, res) => { // save JSON on serve
     
     if (isGeoFileExist(pathGeo)) {
         if (!res.headersSent) {
-            // res.type("application/json");
             res.sendFile(pathGeo, { root: "."}); // not __dirname but "." because it's .mjs file
             console.log(`Cashed geo file sent, path ${pathGeo} for city ${req.query.name}`)
         }

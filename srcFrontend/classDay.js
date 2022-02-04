@@ -266,33 +266,7 @@ export default class Day {
         let indexOfHourSunRise = this.indexOfHourSunRise;
         let indexOfHourSunSet = this.indexOfHourSunSet;
         let temp2mPlusSunriseSunset = this.temp2mPlusSunriseSunset;
-        
 
-        // let sunAmountOfHours = indexOfHourSunSet - indexOfHourSunRise + 1;
-        // console.log(sunAmountOfHours)
-        // let sunColor = "3px solid rgba(255, 255, 0, 0.2)"
-
-        // let arrSunZeros = new Array(this.timePlusSunsetSunrise.length)
-        // let arrSun = arrSunZeros.fill("", 0, this.timePlusSunsetSunrise.length)
-        // console.log(arrSun)
-
-        // let sunCounterDescending = sunAmountOfHours;
-        // let sunMiddle = sunAmountOfHours / 2;
-        // let sunCounterArising = 0;
-        // arrSun.forEach((v, i, arr) => {
-
-        //     if (i >= indexOfHourSunRise + 1 && i <= indexOfHourSunSet + 1) {
-
-        //         if (sunCounterDescending > sunMiddle) {
-        //             arr.splice(i, 1, `3px solid rgba(255, 255, 0, ${(sunAmountOfHours - sunCounterDescending) / 10})`)
-        //             sunCounterDescending--;
-        //         } else {
-        //             arr.splice(i, 1, `3px solid rgba(255, 255, 0, ${(sunAmountOfHours - sunCounterArising) / 10})`)
-        //             sunCounterArising++;
-        //         }  
-        //     } 
-        // })
-            
 
         this.timePlusSunsetSunrise.forEach(function(hour, i) {  
             
@@ -359,7 +333,6 @@ export default class Day {
                 width : "100%",
                 position : "relative",
                 overflow : "hidden",
-                // border : "1px solid white",
                 display : "grid",
                 gridTemplateColumns: "repeat(5, 1fr)",
                 gridTemplateRows: "repeat(6, 1fr)",
@@ -379,7 +352,6 @@ export default class Day {
                 width : "100%",
                 position : "relative",
                 overflow : "hidden",
-                // border : "1px solid white",
                 display : "grid",
                 gridTemplateColumns: "repeat(6, 1fr)", // added one more column
                 gridTemplateRows: "repeat(6, 1fr)",
@@ -414,7 +386,6 @@ export default class Day {
 
         let styles = {
             marginLeft :"3px",       
-            // border : "1px solid white",
             display : "flex",
             flexDirection : "row",
             justifyContent : "space-evenly",
@@ -425,19 +396,14 @@ export default class Day {
 
         let dayDailyTemp2m = document.createElement('div');
         dayDailyTemp2m.classList.add("dayDailyTemp2m");
-        // dayDailyTemp2m.style.order = "3";
         LargeTempAndWeatherCodeContainer.appendChild(dayDailyTemp2m);
-
 
         let dailyWeatherCodeMainContainer = document.createElement('div');
         dailyWeatherCodeMainContainer.classList.add("dailyWeatherCodeMainContainer");
-        // height has been moved to style.css
         dailyWeatherCodeMainContainer.style.width = "60%";
-        // dailyWeatherCodeMainContainer.style.order = "0";
 
         let dailyWeatherCode = document.createElement('div');
         dailyWeatherCode.classList.add("mainWeatherIconSCSSContainer");
-        
         
         // this block needed only for test of weather SCSS animation
         // let testWeatherCode = 0;
@@ -499,14 +465,12 @@ export default class Day {
         let selfThis = this;
 
         let styles = {    
-                // border : "1px solid white",
                 gridArea : "DateC" + this.dayNumber,
             }
 
         setStylesOnElement(dateContainer, styles);
 
         
-
         // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
         let dateText = "";
         switch (this.dayNumber) {
@@ -554,14 +518,9 @@ export default class Day {
                 let currentDate = new Date().toLocaleString('en-US', {timeZone: selfThis.localTimeZone});
                 let seconds, minutes, d = new Date(currentDate);
 
-                // time.weekday = d.getDay();
-                // time.day = d.getDate();
-                // time.month = d.getMonth() + 1; //JS says jan = 0
-                // time.year = d.getFullYear();
                 time.minutes = d.getMinutes();
                 time.hours = d.getHours(); 
                 time.seconds = d.getSeconds();
-                // time.ms = d.getMilliseconds();
                 
                 minutes = (time.minutes < 10 ? '0' + time.minutes : time.minutes);
                 seconds = (time.seconds < 10 ? '0' + time.seconds : time.seconds);
@@ -576,7 +535,6 @@ export default class Day {
 
             }()); // Note the parens here, we invoke these functions right away
             }()); // This one keeps clock away from the global scope
-            // console.log(time.ms); // We have access to all those properties via a single variable.
         }
     }
 
@@ -587,11 +545,6 @@ export default class Day {
         sunriseSunsetContainer.classList.add("sunriseSunsetContainerClass");
         sunriseSunsetContainer.style.gridArea = "SunSC" + this.dayNumber;
 
-        let styles = {      
-            // border : "1px solid white",
-        }
-
-        setStylesOnElement(sunriseSunsetContainer, styles);
 
         if (this.dayNumber !== 1) {  //exclude first day as it isn't possible calculate how first
             // day differ from previous one because there isn't any -3 day from current (only -1 and -2)
@@ -608,7 +561,6 @@ export default class Day {
         windCloudHumidityPressureContainer.style.gridArea = "WCHPC" + this.dayNumber;
 
         let styles = {
-            // border : "1px solid white",
             display: "flex",
             flexFlow : "column wrap",
             justifyContent : "space-around",
@@ -620,7 +572,6 @@ export default class Day {
 
 
         let windCloudHumidityPressureStyles = {
-            // border : "1px solid white",
             height: "50px",
             width: "110px",
             display: "flex",
@@ -643,13 +594,10 @@ export default class Day {
 
         let pressureContainer = document.createElement('div');        
         setStylesOnElement(pressureContainer, windCloudHumidityPressureStyles);
-        // let pressureImage = `<svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
         let pressureImage = `<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
 
         
-
         let dayThis = this;
-        
         let mql = window.matchMedia('(min-width: 768px)');
         
         // only difference in this viewport switcher is about <br> in mobile in Dailypressure
@@ -692,11 +640,8 @@ export default class Day {
         screenTest(mql);
         mql.addEventListener('change', screenTest, false);
 
-
-
-
+        
         windCloudHumidityPressureContainer.append(windContainer, cloudContainer, humidityContainer, pressureContainer);
-
         generalInfoContainer.appendChild(windCloudHumidityPressureContainer);
     }
 }
