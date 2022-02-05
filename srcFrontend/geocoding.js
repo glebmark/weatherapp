@@ -153,7 +153,6 @@ export function createGeoContainer() {
         let geoListOfAllAvailableCities = document.createElement('div');
         geoListOfAllAvailableCities.id = "geoListOfAllAvailableCities";
         let stylesgeoListOfAllAvailableCities = {
-            minWidth : "517px",
             padding: "20px",
             position : "absolute",
             display : "flex",
@@ -184,6 +183,9 @@ export function createGeoContainer() {
         tableHeaderArea.innerText = "Область";
         let tableHeaderCountry = document.createElement('th');
         tableHeaderCountry.innerText = "Страна";
+
+
+
         let tableHeaderLatitude = document.createElement('th');
         tableHeaderLatitude.innerText = "Широта";
         let tableHeaderLongitude = document.createElement('th');
@@ -223,12 +225,38 @@ export function createGeoContainer() {
             let tableBodyLongitude = document.createElement('td');
             tableBodyLongitude.innerText = city.longitude;
 
-            tableBodyRow.append(tableBodyName, tableBodyArea, tableBodyCountry, tableBodyLatitude, tableBodyLongitude);
+
+            let mql = window.matchMedia('(min-width: 768px)');
+            function screenTest(e) {
+              if (e.matches) {
+                /* the viewport is 768 pixels wide or more */
+                tableBodyRow.append(tableBodyName, tableBodyArea, tableBodyCountry, tableBodyLatitude, tableBodyLongitude);    
+              } else {
+                /* the viewport is less than 768 pixels wide */
+                tableBodyRow.append(tableBodyName, tableBodyArea, tableBodyCountry);    
+              }
+            }
+            screenTest(mql);
+            mql.addEventListener('change', screenTest, false);
+
             tableBody.appendChild(tableBodyRow);
         })
         
 
-        tableHeadrow.append(tableHeaderName, tableHeaderArea, tableHeaderCountry, tableHeaderLatitude, tableHeaderLongitude);
+        let mql = window.matchMedia('(min-width: 768px)');
+        function screenTest(e) {
+          if (e.matches) {
+            /* the viewport is 768 pixels wide or more */
+            tableHeadrow.append(tableHeaderName, tableHeaderArea, tableHeaderCountry, tableHeaderLatitude, tableHeaderLongitude);
+          } else {
+            /* the viewport is less than 768 pixels wide */
+            tableHeadrow.append(tableHeaderName, tableHeaderArea, tableHeaderCountry);
+          }
+        }
+        screenTest(mql);
+        mql.addEventListener('change', screenTest, false);
+
+        
         tableHead.appendChild(tableHeadrow);
         table.append(tableHead, tableBody);
         geoListOfAllAvailableCities.appendChild(table);

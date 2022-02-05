@@ -13,12 +13,20 @@ body {
 }
 
 .footerElements {
-  width: 33%;
+  width: 200px;
   font-size: 12px;
+  /* margin: 10px; */
   display: flex;
-  flex-direction : "row";
-  justify-content: center;
+  flex-direction : row;
+  justify-content: flex-start;
   align-items: center;
+}
+
+#footer {
+  flex-direction: column;
+  align-items : center;
+  justify-content: space-around;
+  height: 300px;
 }
 
 a:any-link {
@@ -100,7 +108,7 @@ div[id*="swiperPagination"] {
 
 #mainContainer, #prevMainContainer, #geoMainContainer {
   justify-content:space-around;
-  align-items:center;
+  align-items:flex-start;
   margin-left: 0px;
 }
 
@@ -145,6 +153,16 @@ div[id*="swiperPagination"] {
   display: none;
 }
 
+#geoListOfAllAvailableCities {
+  min-width: auto;
+  width: 100%;
+}
+
+.windCloudHumidityPressure {
+  width: 90px;
+  font-size: 12px;
+}
+
 /* for desktop */
 @media only screen and (min-width: 768px) {
 
@@ -152,12 +170,19 @@ body {
   font-size: 18px;
 }
 
+#footer {
+  flex-direction: row;
+  align-items : baseline;
+  justify-content: space-around;
+  height: 125px;
+}
+
 #clock {
   font-size: 20px;
   line-height: 10px;
 }
 
-td, th {
+th, td {
   text-align: left;
   padding: 10px;
 }
@@ -170,7 +195,7 @@ td, th {
 #mainContainer, #prevMainContainer, #geoMainContainer {
   justify-content:flex-start;
   align-items:flex-start;
-  margin-left: 15px;
+  /* margin-left: 15px; */
 }
 
 #prevMainContainer {
@@ -201,4 +226,26 @@ td, th {
   /* position: static; */
 }
 
+#geoListOfAllAvailableCities {
+  min-width: 517px;
+  width: auto;
 }
+
+.windCloudHumidityPressure {
+  width: 110px;
+  font-size: inherit;
+}
+
+}
+
+
+
+
+
+
+/* debugger */
+/* * {
+  background: #000 !important;
+  color: #0f0 !important;
+  outline: solid #f00 1px !important;
+} */

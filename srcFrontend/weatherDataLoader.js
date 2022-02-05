@@ -3,8 +3,7 @@ import {createPrevMainContainer, createMainContainerAndHeader, } from './mainDOM
 
 export function getWeatherData(cityValues) {
         
-    // let url = "http://www.glebmark.com/weatherData";
-    // let url = `http://www.glebmark.com/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}`;
+    // let url = `http://www.glebmark.com/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}&name=${cityValues.name}`;
     let url = `http://localhost:3005/weatherData?latitude=${cityValues.latitude}&longitude=${cityValues.longitude}&timezone=${cityValues.timezone}&name=${cityValues.name}`;
 
     fetch(url)

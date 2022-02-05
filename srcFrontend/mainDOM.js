@@ -55,7 +55,7 @@ export function createPrevMainContainer() {
             buttonYesterday.style.color = "inherit";        
             buttonYesterday.innerText = "Позавчера" // only for mobile, then rewrite for desktop down below
 
-            let mql = window.matchMedia('(min-width: 768px)');
+            let mql = window.matchMedia('(min-width: 1080px)');
             function screenTest(e) {
             if (e.matches) {
                 /* the viewport is 768 pixels wide or more */
@@ -87,9 +87,9 @@ export function createPrevMainContainer() {
                 prevMainContainer.style.transitionTimingFunction = "ease";
 
                 setTimeout(() => {
-                    buttonYesterday.innerText = "Вчера";
                     buttonDayBeforeYesterday.innerText = "Позавчера";
                     buttonDayBeforeYesterday.style.display = "flex";
+                    buttonYesterday.innerText = "Вчера";
                 }, 1000)
                 
             }
@@ -100,7 +100,6 @@ export function createPrevMainContainer() {
 
             setTimeout(() => {
                 prevMainContainer.style.height = "";
-
                 buttonDayBeforeYesterday.style.height = "300px";
                 buttonDayBeforeYesterday.style.transition =  "all 1s",
                 buttonDayBeforeYesterday.style.transitionTimingFunction = "ease",
@@ -168,7 +167,6 @@ export function createMainContainerAndHeader() {
     footer.id = "footer";
     let stylesFooter = {
         minWidth : "100%",
-        height : "100px",
         marginTop : "50px",
         paddingTop: "15px",
         position : "relative",
@@ -179,8 +177,7 @@ export function createMainContainerAndHeader() {
         bottom : "-10px",
         left : "0px",
         display : "flex",
-        alignItems : "baseline",
-        justifyContent : "space-evenly",   
+        flexWrap : "wrap",
     }
     setStylesOnElement(footer, stylesFooter);
 
@@ -196,7 +193,7 @@ export function createMainContainerAndHeader() {
     let footerLicense = document.createElement('div');
     footerLicense.classList.add("footerElements");
     footerLicense.innerHTML = "<div>Content on this site is \
-    licensed under a <a href='https://creativecommons.org/licenses/by-nc/4.0/' target='_blank'> Creative commons <br> Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a></div>"
+    licensed under a <a href='https://creativecommons.org/licenses/by-nc/4.0/' target='_blank'> Creative commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a></div>"
 
 
     footer.appendChild(footerContacts);

@@ -117,27 +117,43 @@ export default class Day {
         // 3 is current day, 1 and 2 - previous two, 4...9 is subsequent days
         let minuteName = "";
         switch (this.sunDailyDelta) {
+            case -0:    
             case 0:    
+            case -5:
             case 5:
+            case -6:
             case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
                 minuteName = "минут";
                 break;
+            case -1:
             case 1:
                 minuteName = "минуту";
                 break;
+            case -2:
             case 2:
+            case -3:
             case 3:
+            case -4:
             case 4:
                 minuteName = "минуты";
                 break;
         }
 
         this.sunDailyDeltaText = "";
-        if (Math.sign(this.sunDailyDelta) === 1) { // it's rising length of day from 22.Dec to 22.Jun
-            this.sunDailyDeltaText = `<span style='font-size: 14px;'>${"\u00a0".repeat(2)}Световой день длиннее на 
+        if (Math.sign(this.sunDailyDelta) >= 0) { // it's rising length of day from 22.Dec to 22.Jun
+            this.sunDailyDeltaText = `<span style='font-size: 14px; padding-left: 10px'>Световой день длиннее на 
             <span style='color: #a3e6d1;'>${this.sunDailyDelta + " " + minuteName}</span></span>`
         } else { // it's falling length of day from 22.Jun to 22.Dec
-            this.sunDailyDeltaText = `<span style='font-size: 14px;'>${"\u00a0".repeat(2)}Световой день короче на 
+            this.sunDailyDeltaText = `<span style='font-size: 14px; padding-left: 10px'>Световой день короче на 
             <span style='color: #FD5656;'>${this.sunDailyDelta + " " + minuteName}</span></span>`
         }
 
@@ -343,7 +359,7 @@ export default class Day {
                 "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
                 "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
                 "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} . ."
-                `, // there 3 SunSC, while in mobile 5
+                `, // there 3 SunSC, while in mobile 6
             }
           } else {
             /* the viewport is less than 768 pixels wide */
@@ -361,7 +377,7 @@ export default class Day {
                 "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
                 "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
                 "${'LTaWCC' + dayNumberString} ${'LTaWCC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString} ${'WCHPC' + dayNumberString}"
-                "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ."
+                "${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString} ${'SunSC' + dayNumberString}"
                 `,
             }
           }
@@ -573,7 +589,6 @@ export default class Day {
 
         let windCloudHumidityPressureStyles = {
             height: "50px",
-            width: "110px",
             display: "flex",
             flexDirection : "row",
             justifyContent : "flex-start",
@@ -581,20 +596,25 @@ export default class Day {
         }
 
         let windContainer = document.createElement('div');
+        windContainer.classList.add("windCloudHumidityPressure");
         setStylesOnElement(windContainer, windCloudHumidityPressureStyles);
         let windImage = `<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="36px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g><g><path d="M14.5,17c0,1.65-1.35,3-3,3s-3-1.35-3-3h2c0,0.55,0.45,1,1,1s1-0.45,1-1s-0.45-1-1-1H2v-2h9.5 C13.15,14,14.5,15.35,14.5,17z M19,6.5C19,4.57,17.43,3,15.5,3S12,4.57,12,6.5h2C14,5.67,14.67,5,15.5,5S17,5.67,17,6.5 S16.33,8,15.5,8H2v2h13.5C17.43,10,19,8.43,19,6.5z M18.5,11H2v2h16.5c0.83,0,1.5,0.67,1.5,1.5S19.33,16,18.5,16v2 c1.93,0,3.5-1.57,3.5-3.5S20.43,11,18.5,11z"/></g></g></svg>`;
 
         let cloudContainer = document.createElement('div');
+        cloudContainer.classList.add("windCloudHumidityPressure");
         setStylesOnElement(cloudContainer, windCloudHumidityPressureStyles);
         let cloudImage = `<svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>`;
 
         let humidityContainer = document.createElement('div');
+        humidityContainer.classList.add("windCloudHumidityPressure");
         setStylesOnElement(humidityContainer, windCloudHumidityPressureStyles);
         let humidityImage = `<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="36px" viewBox="0 0 20 20" width="36px" fill="#FFFFFF"><rect fill="none" height="20" width="20"/><path d="M10,2c0,0-6.5,5.16-6.5,9.5c0,3.59,2.91,6.5,6.5,6.5s6.5-2.91,6.5-6.5C16.5,7.16,10,2,10,2z M7.03,11.93 c0.24,1.66,1.79,2.77,3.4,2.54c0.3-0.04,0.57,0.19,0.57,0.49c0,0.28-0.2,0.47-0.42,0.5c-2.23,0.31-4.22-1.23-4.54-3.39 C6,11.77,6.23,11.5,6.54,11.5C6.79,11.5,7,11.68,7.03,11.93z"/></svg>`;
 
-        let pressureContainer = document.createElement('div');        
+        let pressureContainer = document.createElement('div');       
+        pressureContainer.classList.add("windCloudHumidityPressure");
         setStylesOnElement(pressureContainer, windCloudHumidityPressureStyles);
-        let pressureImage = `<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
+        let pressureImageDesktop = `<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
+        let pressureImageMobile = `<svg xmlns="http://www.w3.org/2000/svg" height="38px" viewBox="0 0 24 24" width="38px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 13V5c0-1.66-1.34-3-3-3S9 3.34 9 5v8c-1.21.91-2 2.37-2 4 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.63-.79-3.09-2-4zm-4-8c0-.55.45-1 1-1s1 .45 1 1h-1v1h1v2h-1v1h1v2h-2V5z"/></svg>`;
 
         
         let dayThis = this;
@@ -610,13 +630,13 @@ export default class Day {
                     windContainer.innerHTML = `${windImage} \u00a0 ${dayThis.wind10m[dayThis.indexOfCurrentHour].toString().substring(0, 3)} м/с `;
                     cloudContainer.innerHTML = `${cloudImage} \u00a0 ${dayThis.cloudcover[dayThis.indexOfCurrentHour]} %`;
                     humidityContainer.innerHTML = `${humidityImage} \u00a0 ${dayThis.relativehumidity_2m[dayThis.indexOfCurrentHour]} % `;
-                    pressureContainer.innerHTML = `${pressureImage} \u00a0 ${dayThis.pressure[dayThis.indexOfCurrentHour].toString().substring(0, 3)} мм \u00a0\u00a0 рт. ст.`;
+                    pressureContainer.innerHTML = `${pressureImageDesktop} \u00a0 ${dayThis.pressure[dayThis.indexOfCurrentHour].toString().substring(0, 3)} мм \u00a0\u00a0 рт. ст.`;
                 } else {
                     // call method for other days
                     windContainer.innerHTML = `${windImage} \u00a0 ${dayThis.averageDailyWind10m.toString().substring(0, 3)} м/с `; 
                     cloudContainer.innerHTML = ` ${cloudImage} \u00a0 ${dayThis.averageDailycloudcover} %`; 
                     humidityContainer.innerHTML = `${humidityImage} \u00a0 ${dayThis.averageDailyhumidity} % `; 
-                    pressureContainer.innerHTML = `${pressureImage} \u00a0 ${dayThis.averageDailypressure.toString().substring(0, 3)} мм \u00a0\u00a0 рт. ст.`;
+                    pressureContainer.innerHTML = `${pressureImageDesktop} \u00a0 ${dayThis.averageDailypressure.toString().substring(0, 3)} мм \u00a0\u00a0 рт. ст.`;
                 }
             } else {
                 /* the viewport is less than 768 pixels wide */
@@ -626,13 +646,13 @@ export default class Day {
                 windContainer.innerHTML = `${windImage} \u00a0 ${dayThis.wind10m[dayThis.indexOfCurrentHour].toString().substring(0, 3)} м/с `;
                 cloudContainer.innerHTML = `${cloudImage} \u00a0 ${dayThis.cloudcover[dayThis.indexOfCurrentHour]} %`;
                 humidityContainer.innerHTML = `${humidityImage} \u00a0 ${dayThis.relativehumidity_2m[dayThis.indexOfCurrentHour]} % `;
-                pressureContainer.innerHTML = `${pressureImage} \u00a0 ${dayThis.pressure[dayThis.indexOfCurrentHour].toString().substring(0, 3)} мм <br> \u00a0\u00a0 рт. ст.`;
+                pressureContainer.innerHTML = `${pressureImageMobile} \u00a0 ${dayThis.pressure[dayThis.indexOfCurrentHour].toString().substring(0, 3)} мм <br> \u00a0\u00a0 рт. ст.`;
             } else {
                 // call method for other days
                 windContainer.innerHTML = `${windImage} \u00a0 ${dayThis.averageDailyWind10m.toString().substring(0, 3)} м/с `; 
                 cloudContainer.innerHTML = ` ${cloudImage} \u00a0 ${dayThis.averageDailycloudcover} %`; 
                 humidityContainer.innerHTML = `${humidityImage} \u00a0 ${dayThis.averageDailyhumidity} % `; 
-                pressureContainer.innerHTML = `${pressureImage} \u00a0 ${dayThis.averageDailypressure.toString().substring(0, 3)} мм <br> \u00a0\u00a0 рт. ст.`; 
+                pressureContainer.innerHTML = `${pressureImageMobile} \u00a0 ${dayThis.averageDailypressure.toString().substring(0, 3)} мм <br> \u00a0\u00a0 рт. ст.`; 
             }
             }
         }
@@ -640,7 +660,7 @@ export default class Day {
         screenTest(mql);
         mql.addEventListener('change', screenTest, false);
 
-        
+
         windCloudHumidityPressureContainer.append(windContainer, cloudContainer, humidityContainer, pressureContainer);
         generalInfoContainer.appendChild(windCloudHumidityPressureContainer);
     }
